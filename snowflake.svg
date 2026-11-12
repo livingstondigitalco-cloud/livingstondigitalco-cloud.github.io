@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" data-wood="snowflake" data-name="">
   <!--
-    Layered snowflake: crystal base (snowflake_base.svg) with the 47.6 mm top disc (snowflake_top.svg) on the medallion.
+    One-piece snowflake from the fixed laser design (filigree is in the wood silhouette). Logo area is the 57 mm inner scored ring; greeting sits in a band at the bottom of the ring.
     Convention:
       viewBox="0 0 1000 1000"  (matches the wood texture)
-      data-wood selects wood-<name>.webp
+      data-wood selects assets/img/wood-<name>.webp
       #logo-area   rect  — where the uploaded logo + text are fitted
       #hang-hole   circle — hanging hole (informational; also punched in the wood texture)
       #ENGRAVE     black fills, burned into the wood
@@ -12,20 +12,18 @@
     Keep decorations out of the logo area.
   -->
   <g id="META">
-    <rect id="logo-area" x="374.892" y="389.418" width="250.215" height="250.215" fill="none"/>
-    <circle id="hang-hole" cx="500" cy="115.844" r="17.149" fill="none"/>
+    <rect id="logo-area" x="338.476" y="354.013" width="323.109" height="323.109" fill="none"/>
+    <circle id="hang-hole" cx="500.03" cy="110.525" r="16.735" fill="none"/>
   </g>
   <g id="ENGRAVE"></g>
-  <g id="SCORE" transform="translate(113.28,49.853) scale(8.575)" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
-    <path d="M 45.1,24.43 L 45.1,22.524" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 70.874,39.311 L 72.525,38.358" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 70.874,69.072 L 72.525,70.025" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 45.1,83.953 L 45.1,85.859" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 19.326,69.072 L 17.675,70.025" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 19.326,39.311 L 17.675,38.358" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <g transform="translate(21.3,30.391)">
-    <path d="M 1.2,23.8 A 22.6,22.6 0 1 1 46.4,23.8 A 22.6,22.6 0 1 1 1.2,23.8 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 2,23.8 A 21.8,21.8 0 1 1 45.6,23.8 A 21.8,21.8 0 1 1 2,23.8 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
-    </g>
+  <g id="SCORE" transform="translate(98.362,43.47) scale(8.367)" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+    <path d="M 77.5036,56.4207 L 77.4681,57.8682 L 77.3615,59.3122 L 77.1843,60.7492 L 76.9368,62.1758 L 76.6195,63.5886 L 76.2333,64.9841 L 75.7791,66.3589 L 75.258,67.7098 L 74.6713,69.0335 L 74.0203,70.3269 L 73.3066,71.5867 L 72.5319,72.81 L 71.6982,73.9938 L 70.8074,75.1353 L 69.8617,76.2317 L 68.8632,77.2803 L 67.8146,78.2787 L 66.7182,79.2245 L 65.5767,80.1153 L 64.3929,80.949 L 63.1696,81.7237 L 61.9098,82.4373 L 60.6165,83.0884 L 59.2928,83.6751 L 57.9418,84.1962 L 56.567,84.6504 L 55.1715,85.0366 L 53.7588,85.3538 L 52.3321,85.6014 L 50.8951,85.7786 L 49.4511,85.8851 L 48.0036,85.9207 L 46.5561,85.8851 L 45.1121,85.7786 L 43.675,85.6014 L 42.2484,85.3538 L 40.8357,85.0366 L 39.4402,84.6504 L 38.0653,84.1962 L 36.7144,83.6751 L 35.3907,83.0884 L 34.0974,82.4373 L 32.8376,81.7237 L 31.6143,80.949 L 30.4305,80.1153 L 29.289,79.2245 L 28.1926,78.2787 L 27.1439,77.2803 L 26.1455,76.2317 L 25.1998,75.1353 L 24.309,73.9938 L 23.4752,72.81 L 22.7006,71.5867 L 21.9869,70.3269 L 21.3359,69.0335 L 20.7491,67.7098 L 20.228,66.3589 L 19.7739,64.9841 L 19.3877,63.5886 L 19.0704,62.1758 L 18.8229,60.7492 L 18.6456,59.3122 L 18.5391,57.8682 L 18.5036,56.4207 L 18.5391,54.9732 L 18.6456,53.5292 L 18.8229,52.0921 L 19.0704,50.6655 L 19.3877,49.2528 L 19.7739,47.8573 L 20.228,46.4824 L 20.7491,45.1315 L 21.3359,43.8078 L 21.9869,42.5145 L 22.7006,41.2546 L 23.4752,40.0313 L 24.309,38.8475 L 25.1998,37.7061 L 26.1455,36.6097 L 27.1439,35.561 L 28.1926,34.5626 L 29.289,33.6169 L 30.4305,32.726 L 31.6143,31.8923 L 32.8376,31.1177 L 34.0974,30.404 L 35.3907,29.753 L 36.7144,29.1662 L 38.0653,28.6451 L 39.4402,28.1909 L 40.8357,27.8047 L 42.2484,27.4875 L 43.675,27.24 L 45.1121,27.0627 L 46.5561,26.9562 L 48.0036,26.9207 L 49.4511,26.9562 L 50.8951,27.0627 L 52.3321,27.24 L 53.7588,27.4875 L 55.1715,27.8047 L 56.567,28.1909 L 57.9418,28.6451 L 59.2928,29.1662 L 60.6165,29.753 L 61.9098,30.404 L 63.1696,31.1177 L 64.3929,31.8923 L 65.5767,32.726 L 66.7182,33.6169 L 67.8146,34.5626 L 68.8632,35.561 L 69.8617,36.6097 L 70.8074,37.7061 L 71.6982,38.8475 L 72.5319,40.0313 L 73.3066,41.2546 L 74.0203,42.5145 L 74.6713,43.8078 L 75.258,45.1315 L 75.7791,46.4824 L 76.2333,47.8573 L 76.6195,49.2528 L 76.9368,50.6655 L 77.1843,52.0921 L 77.3615,53.5292 L 77.4681,54.9732 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 76.5036,56.4207 L 76.4693,57.8191 L 76.3664,59.2142 L 76.1951,60.6025 L 75.956,61.9807 L 75.6495,63.3456 L 75.2764,64.6938 L 74.8376,66.022 L 74.3342,67.3271 L 73.7673,68.606 L 73.1384,69.8555 L 72.4489,71.0726 L 71.7005,72.2544 L 70.895,73.3981 L 70.0344,74.5009 L 69.1207,75.5601 L 68.1561,76.5732 L 67.143,77.5378 L 66.0838,78.4515 L 64.981,79.3121 L 63.8373,80.1176 L 62.6555,80.8659 L 61.4384,81.5554 L 60.1889,82.1844 L 58.9101,82.7512 L 57.605,83.2547 L 56.2767,83.6935 L 54.9285,84.0666 L 53.5637,84.3731 L 52.1854,84.6122 L 50.7971,84.7834 L 49.402,84.8863 L 48.0036,84.9207 L 46.6052,84.8863 L 45.2101,84.7834 L 43.8218,84.6122 L 42.4435,84.3731 L 41.0787,84.0666 L 39.7305,83.6935 L 38.4022,83.2547 L 37.0971,82.7512 L 35.8183,82.1844 L 34.5688,81.5554 L 33.3517,80.8659 L 32.1698,80.1176 L 31.0262,79.3121 L 29.9234,78.4515 L 28.8642,77.5378 L 27.8511,76.5732 L 26.8865,75.5601 L 25.9728,74.5009 L 25.1122,73.3981 L 24.3067,72.2544 L 23.5583,71.0726 L 22.8688,69.8555 L 22.2399,68.606 L 21.673,67.3271 L 21.1696,66.022 L 20.7308,64.6938 L 20.3577,63.3456 L 20.0512,61.9807 L 19.8121,60.6025 L 19.6408,59.2142 L 19.5379,57.8191 L 19.5036,56.4207 L 19.5379,55.0222 L 19.6408,53.6272 L 19.8121,52.2389 L 20.0512,50.8606 L 20.3577,49.4957 L 20.7308,48.1476 L 21.1696,46.8193 L 21.673,45.5142 L 22.2399,44.2354 L 22.8688,42.9859 L 23.5583,41.7687 L 24.3067,40.5869 L 25.1122,39.4432 L 25.9728,38.3405 L 26.8865,37.2812 L 27.8511,36.2681 L 28.8642,35.3036 L 29.9234,34.3899 L 31.0262,33.5293 L 32.1698,32.7238 L 33.3517,31.9754 L 34.5688,31.2859 L 35.8183,30.657 L 37.0971,30.0901 L 38.4022,29.5867 L 39.7305,29.1479 L 41.0787,28.7748 L 42.4435,28.4683 L 43.8218,28.2291 L 45.2101,28.0579 L 46.6052,27.955 L 48.0036,27.9207 L 49.402,27.955 L 50.7971,28.0579 L 52.1854,28.2291 L 53.5637,28.4683 L 54.9285,28.7748 L 56.2767,29.1479 L 57.605,29.5867 L 58.9101,30.0901 L 60.1889,30.657 L 61.4384,31.2859 L 62.6555,31.9754 L 63.8373,32.7238 L 64.981,33.5293 L 66.0838,34.3899 L 67.143,35.3036 L 68.1561,36.2681 L 69.1207,37.2812 L 70.0344,38.3405 L 70.895,39.4432 L 71.7005,40.5869 L 72.4489,41.7687 L 73.1384,42.9859 L 73.7673,44.2354 L 74.3342,45.5142 L 74.8376,46.8193 L 75.2764,48.1476 L 75.6495,49.4957 L 75.956,50.8606 L 76.1951,52.2389 L 76.3664,53.6272 L 76.4693,55.0222 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 48.0036,19.3231 L 48.0036,17.7159" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 80.1344,37.8699 L 81.523,37.0683" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 80.1344,74.9714 L 81.523,75.7731" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 48.0036,93.5222 L 48.0036,95.1255" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 15.8728,74.9714 L 14.4842,75.7731" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 15.8728,37.8699 L 14.4842,37.0683" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>
