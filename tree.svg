@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" data-wood="tree" data-name="">
+  <!--
+    Stylized Christmas tree from the premium laser design (cut stars and diamonds are in the wood silhouette).
+    Convention:
+      viewBox="0 0 1000 1000"  (matches the wood texture)
+      data-wood selects wood-<name>.webp
+      #logo-area   rect  — where the uploaded logo + text are fitted
+      #hang-hole   circle — hanging hole (informational; also punched in the wood texture)
+      #ENGRAVE     black fills, burned into the wood
+      #SCORE       strokes, incised grooves (preview stroke width, not laser 0.1 mm)
+    Keep decorations out of the logo area.
+  -->
+  <g id="META">
+    <rect id="logo-area" x="378.33" y="410.34" width="243.339" height="243.339" fill="none"/>
+    <circle id="hang-hole" cx="500" cy="116.118" r="17.149" fill="none"/>
+  </g>
+  <g id="ENGRAVE"></g>
+  <g id="SCORE" transform="translate(113.28,16) scale(8.575)" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+    <path d="M 22.867,60.178 A 22.233,22.233 0 1 1 67.333,60.178 A 22.233,22.233 0 1 1 22.867,60.178 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 23.867,60.178 A 21.233,21.233 0 1 1 66.333,60.178 A 21.233,21.233 0 1 1 23.867,60.178 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 21.679,59.982 L 22.655,60.386 L 23.63,60.763 L 24.408,61.021" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 65.792,61.021 L 66.57,60.763 L 67.545,60.386 L 68.521,59.982" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 15.823,79.305 L 16.799,79.734 L 17.775,80.134 L 18.751,80.478 L 19.727,80.742 L 20.703,80.907 L 21.679,80.964 L 22.655,80.907 L 23.63,80.742 L 24.606,80.478 L 25.582,80.134 L 26.558,79.734 L 27.534,79.305 L 28.51,79.734 L 29.486,80.134 L 30.462,80.478 L 31.438,80.742 L 32.413,80.907 L 33.389,80.964 L 34.365,80.907 L 35.341,80.742 L 36.317,80.478 L 37.293,80.134 L 38.269,79.734 L 38.278,79.73" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 43.756,80.845 L 44.124,80.907 L 45.1,80.964 L 46.076,80.907 L 46.444,80.845" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 51.922,79.73 L 51.931,79.734 L 52.907,80.134 L 53.883,80.478 L 54.859,80.742 L 55.835,80.907 L 56.811,80.964 L 57.787,80.907 L 58.762,80.742 L 59.738,80.478 L 60.714,80.134 L 61.69,79.734 L 62.666,79.305 L 63.642,79.734 L 64.618,80.134 L 65.594,80.478 L 66.57,80.742 L 67.545,80.907 L 68.521,80.964 L 69.497,80.907 L 70.473,80.742 L 71.449,80.478 L 72.425,80.134 L 73.401,79.734 L 74.377,79.305" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 10.944,98.628 L 12.082,99.082 L 13.221,99.506 L 14.36,99.87 L 15.498,100.149 L 16.637,100.324 L 17.775,100.384 L 18.914,100.324 L 20.052,100.149 L 21.191,99.87 L 22.329,99.506 L 23.468,99.082 L 24.606,98.628 L 25.745,99.082 L 26.883,99.506 L 28.022,99.87 L 29.16,100.149 L 30.299,100.324 L 31.438,100.384 L 32.576,100.324 L 33.715,100.149 L 34.853,99.87 L 35.992,99.506 L 37.13,99.082 L 38.269,98.628 L 39.407,99.082 L 40.546,99.506 L 41.684,99.87 L 42.823,100.149 L 43.961,100.324 L 45.1,100.384 L 46.239,100.324 L 47.377,100.149 L 48.516,99.87 L 49.654,99.506 L 50.793,99.082 L 51.931,98.628 L 53.07,99.082 L 54.208,99.506 L 55.347,99.87 L 56.485,100.149 L 57.624,100.324 L 58.762,100.384 L 59.901,100.324 L 61.04,100.149 L 62.178,99.87 L 63.317,99.506 L 64.455,99.082 L 65.594,98.628 L 66.732,99.082 L 67.871,99.506 L 69.009,99.87 L 70.148,100.149 L 71.286,100.324 L 72.425,100.384 L 73.563,100.324 L 74.702,100.149 L 75.84,99.87 L 76.979,99.506 L 78.118,99.082 L 79.256,98.628" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

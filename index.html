@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Preview your logo on a custom laser-engraved basswood holiday ornament. Handmade in Howell, Michigan, with local delivery in Howell, Brighton, and Fowlerville. Order by December 10.">
+  <meta name="theme-color" content="#f6efe3">
+  <title>Livingston Laser Co — Custom Holiday Ornaments</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#designer">Skip to the preview tool</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="wordmark" href="#">
+        <img src="favicon.svg" alt="" width="36" height="36">
+        <span>
+          <strong>Livingston Laser Co</strong>
+          <em>Howell, Michigan</em>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#designer">Preview</a>
+        <a href="#pricing">Pricing</a>
+        <a class="nav-cta" href="#order">Order</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <p class="eyebrow">Holiday 2026 · Handmade basswood</p>
+        <h1>See your logo on a handmade holiday ornament</h1>
+        <p class="lede">Upload a logo and we’ll show you a live preview of a laser-engraved 3&nbsp;mm basswood ornament. Custom orders are cut locally, with delivery or pickup in Howell, Brighton, and Fowlerville, Michigan.</p>
+        <p class="hero-actions">
+          <a class="btn btn-primary" href="#designer">Upload your logo</a>
+          <a class="btn btn-ghost" href="#pricing">View pricing</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="designer" class="designer">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Live preview</p>
+          <h2>Design your ornament</h2>
+          <p>The preview is a close estimate of how the laser will burn your logo into the wood. Final engraving may vary slightly.</p>
+        </div>
+
+        <div class="designer-grid">
+          <div class="preview-col">
+            <div class="preview-stage" id="preview-stage">
+              <img id="ribbon" class="ribbon" src="ribbon.svg" alt="" width="600" height="260">
+              <canvas id="ornament" width="1140" height="1280" role="img" aria-label="Preview of a basswood ornament with your logo engraved"></canvas>
+            </div>
+            <p class="preview-note">3&nbsp;mm basswood · about 3.5 inches across</p>
+          </div>
+
+          <form class="controls" id="controls" action="#" onsubmit="return false;">
+            <div class="field">
+              <span class="label" id="logo-label">Your logo</span>
+              <label class="dropzone" id="dropzone" for="logo-input">
+                <input id="logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="logo-label">
+                <span class="dropzone-icon" aria-hidden="true">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/><path d="M16 10v12M10 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </span>
+                <span class="dropzone-title" id="dropzone-title">Drop a PNG, JPG, or SVG, or click to upload</span>
+                <span class="dropzone-sub">We’ll convert it to a laser-ready monochrome burn.</span>
+              </label>
+            </div>
+
+            <fieldset class="field">
+              <legend class="label">Ornament style</legend>
+              <div class="style-grid" id="style-grid" role="radiogroup" aria-label="Ornament style"></div>
+            </fieldset>
+
+            <div class="field">
+              <label class="label" for="custom-text">Optional text under the logo</label>
+              <input type="text" id="custom-text" maxlength="36" placeholder="Happy Holidays 2026" autocomplete="off">
+            </div>
+
+            <div class="field sliders">
+              <div class="slider-row">
+                <label class="label" for="threshold">Threshold <span class="value-readout" id="threshold-readout">50</span></label>
+                <input type="range" id="threshold" min="10" max="90" value="50" step="1">
+                <p class="hint">Lower keeps only the darkest marks. Raise it to pick up lighter detail.</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="invert">
+                <span class="toggle-ui" aria-hidden="true"></span>
+                <span>Invert <span class="toggle-help">Use this for a light logo on a dark background</span></span>
+              </label>
+            </div>
+
+            <fieldset class="field">
+              <legend class="label">Quantity</legend>
+              <div class="qty-row" id="qty-row" role="radiogroup" aria-label="Quantity"></div>
+            </fieldset>
+
+            <div class="order-box" id="order">
+              <p class="order-line">Order by <strong>December 10</strong> for holiday delivery.</p>
+              <p class="order-line">Local delivery or pickup in <strong>Howell, Brighton, and Fowlerville, MI</strong>.</p>
+              <a class="btn btn-primary btn-cta" id="mailto-cta" href="mailto:livingstondigitalco@gmail.com">Email your logo and quantity to livingstondigitalco@gmail.com</a>
+              <p class="hint cta-hint">Your email app will open with the quantity and style filled in. Please attach your logo file to the message.</p>
+              <p class="deposit-note">Orders start with that email. We’ll send a proof of your ornament, and the 50% deposit (<span id="deposit-amount">$87.50</span>) is paid after you approve the proof. The rest is due at pickup or delivery.</p>
+              <a class="btn btn-deposit btn-cta" id="paypal-cta" href="#">Pay 50% deposit with PayPal</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Simple sets</p>
+          <h2>Pricing</h2>
+          <p>Each set is a single logo and style, engraved on 3&nbsp;mm basswood, with local delivery or pickup.</p>
+        </div>
+        <div class="price-grid">
+          <article class="price-card" data-qty="25">
+            <h3>25 ornaments</h3>
+            <p class="price"><span>$100</span></p>
+            <p class="each">$4.00 each</p>
+          </article>
+          <article class="price-card featured" data-qty="50">
+            <p class="badge">Popular</p>
+            <h3>50 ornaments</h3>
+            <p class="price"><span>$175</span></p>
+            <p class="each">$3.50 each</p>
+          </article>
+          <article class="price-card" data-qty="100">
+            <h3>100 ornaments</h3>
+            <p class="price"><span>$300</span></p>
+            <p class="each">$3.00 each</p>
+          </article>
+        </div>
+        <p class="pricing-note">Order by December 10 · Local delivery or pickup in Howell, Brighton, and Fowlerville, MI</p>
+      </div>
+    </section>
+
+    <section class="steps">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">From logo to doorstep</p>
+          <h2>How it works</h2>
+        </div>
+        <ol class="step-grid">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Upload and preview</h3>
+            <p>Drop in your logo, pick a style, and adjust the engraving until it looks right.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Email your order</h3>
+            <p>Send the logo and quantity to livingstondigitalco@gmail.com. We’ll send a proof to approve, then a 50% deposit holds your order.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>We engrave and deliver</h3>
+            <p>Each ornament is laser-engraved and cut from basswood, then delivered or available for pickup around Livingston County. The balance is due then.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>Livingston Laser Co, Howell, MI</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" data-wood="snowflake" data-name="">
+  <!--
+    Layered snowflake: crystal base (snowflake_base.svg) with the 47.6 mm top disc (snowflake_top.svg) on the medallion.
+    Convention:
+      viewBox="0 0 1000 1000"  (matches the wood texture)
+      data-wood selects wood-<name>.webp
+      #logo-area   rect  — where the uploaded logo + text are fitted
+      #hang-hole   circle — hanging hole (informational; also punched in the wood texture)
+      #ENGRAVE     black fills, burned into the wood
+      #SCORE       strokes, incised grooves (preview stroke width, not laser 0.1 mm)
+    Keep decorations out of the logo area.
+  -->
+  <g id="META">
+    <rect id="logo-area" x="374.892" y="389.418" width="250.215" height="250.215" fill="none"/>
+    <circle id="hang-hole" cx="500" cy="115.844" r="17.149" fill="none"/>
+  </g>
+  <g id="ENGRAVE"></g>
+  <g id="SCORE" transform="translate(113.28,49.853) scale(8.575)" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+    <path d="M 45.1,24.43 L 45.1,22.524" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 70.874,39.311 L 72.525,38.358" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 70.874,69.072 L 72.525,70.025" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 45.1,83.953 L 45.1,85.859" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 19.326,69.072 L 17.675,70.025" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 19.326,39.311 L 17.675,38.358" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(21.3,30.391)">
+    <path d="M 1.2,23.8 A 22.6,22.6 0 1 1 46.4,23.8 A 22.6,22.6 0 1 1 1.2,23.8 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 2,23.8 A 21.8,21.8 0 1 1 45.6,23.8 A 21.8,21.8 0 1 1 2,23.8 Z" fill="none" stroke="#0000FF" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>
