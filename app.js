@@ -556,7 +556,7 @@
       "Business name:",
       "Contact name:",
       "Phone or best email:",
-      "Delivery city (Howell / Brighton / Fowlerville):",
+      "Ship to (city and state), or local pickup in Howell:",
       "",
       "Thank you!",
     ].join("\n");
@@ -835,7 +835,7 @@
       "Business name:",
       "Contact name:",
       "Phone or best email:",
-      "Delivery city (Howell / Brighton / Fowlerville):",
+      "Ship to (city and state), or local pickup in Howell:",
       "",
       "Thank you!",
     ].join("\n");
