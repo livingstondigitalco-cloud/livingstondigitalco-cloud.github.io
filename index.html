@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Preview your logo on a custom laser-engraved basswood holiday ornament. Handmade in Howell, Michigan, with local delivery in Howell, Brighton, and Fowlerville. Order by December 10.">
+  <meta name="description" content="Custom laser-engraved basswood holiday ornaments and logo keychains. Handmade in Howell, Michigan, with local delivery in Howell, Brighton, and Fowlerville. Order by December 10.">
   <meta name="theme-color" content="#f6efe3">
-  <title>Livingston Laser Co — Custom Holiday Ornaments</title>
+  <title>Livingston Laser Co — Custom Holiday Ornaments &amp; Logo Keychains</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -22,7 +22,8 @@
         </span>
       </a>
       <nav class="nav">
-        <a href="#designer">Preview</a>
+        <a class="nav-product" href="#designer">Ornaments</a>
+        <a class="nav-product" href="#keychains">Keychains</a>
         <a href="#pricing">Pricing</a>
         <a class="nav-cta" href="#order">Order</a>
       </nav>
@@ -37,7 +38,8 @@
         <p class="lede">Upload a logo and we’ll show you a live preview of a laser-engraved 3&nbsp;mm basswood ornament. Custom orders are cut locally, with delivery or pickup in Howell, Brighton, and Fowlerville, Michigan.</p>
         <p class="hero-actions">
           <a class="btn btn-primary" href="#designer">Upload your logo</a>
-          <a class="btn btn-ghost" href="#pricing">View pricing</a>
+          <a class="btn btn-ghost" href="#pricing">Ornament pricing</a>
+          <a class="btn btn-ghost" href="#keychains">Logo keychains</a>
         </p>
       </div>
     </section>
@@ -140,6 +142,77 @@
           </article>
         </div>
         <p class="pricing-note">Order by December 10 · Local delivery or pickup in Howell, Brighton, and Fowlerville, MI</p>
+      </div>
+    </section>
+
+
+    <section id="keychains" class="designer keychains">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Keep your logo on their keys</p>
+          <h2>Logo Keychains</h2>
+          <p>A single-layer engraved basswood keychain, 2.5&nbsp;×&nbsp;1.25&nbsp;in rounded rectangle, with your logo engraved and a split ring included.</p>
+        </div>
+
+        <div class="designer-grid">
+          <div class="preview-col">
+            <div class="preview-stage keychain-stage" id="keychain-stage">
+              <img src="keychain.svg" width="720" height="320" alt="Preview of a basswood logo keychain with a split ring and a placeholder logo engraved in the center">
+            </div>
+            <p class="preview-note">3&nbsp;mm basswood · 2.5&nbsp;×&nbsp;1.25&nbsp;in rounded rectangle · split ring included</p>
+            <p class="preview-note">The preview shows the size and shape. We’ll send a proof with your logo before cutting.</p>
+          </div>
+
+          <form class="controls" id="keychain-controls" action="#" onsubmit="return false;">
+            <div class="field">
+              <span class="label" id="keychain-logo-label">Your logo</span>
+              <label class="dropzone" id="keychain-dropzone" for="keychain-logo-input">
+                <input id="keychain-logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="keychain-logo-label">
+                <span class="dropzone-icon" aria-hidden="true">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/><path d="M16 10v12M10 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </span>
+                <span class="dropzone-title" id="keychain-dropzone-title">Drop a PNG, JPG, or SVG, or click to upload</span>
+                <span class="dropzone-sub">We’ll engrave it as a monochrome burn on the keychain.</span>
+              </label>
+            </div>
+
+            <fieldset class="field">
+              <legend class="label">Quantity</legend>
+              <div class="qty-row" id="keychain-qty-row" role="radiogroup" aria-label="Keychain quantity"></div>
+            </fieldset>
+
+            <div class="order-box" id="keychain-order">
+              <p class="order-line">Order by <strong>December 10</strong> for holiday delivery.</p>
+              <p class="order-line">Local delivery or pickup in <strong>Howell, Brighton, and Fowlerville, MI</strong>.</p>
+              <a class="btn btn-primary btn-cta" id="keychain-mailto-cta" href="mailto:livingstondigitalco@gmail.com">Email your logo and quantity to livingstondigitalco@gmail.com</a>
+              <p class="hint cta-hint">Your email app will open with the quantity filled in. Please attach your logo file to the message.</p>
+              <p class="deposit-note">Orders start with that email. We’ll send a proof of your keychain, and the 50% deposit (<span id="keychain-deposit-amount">$62.50</span>) is paid after you approve the proof. The rest is due at pickup or delivery.</p>
+              <a class="btn btn-deposit btn-cta" id="keychain-paypal-cta" href="#">Pay 50% deposit with PayPal</a>
+            </div>
+          </form>
+        </div>
+
+        <div class="keychain-pricing">
+          <div class="price-grid">
+            <article class="keychain-price-card price-card" data-qty="25">
+              <h3>25 keychains</h3>
+              <p class="price"><span>$75</span></p>
+              <p class="each">$3.00 each</p>
+            </article>
+            <article class="keychain-price-card price-card featured" data-qty="50">
+              <p class="badge">Popular</p>
+              <h3>50 keychains</h3>
+              <p class="price"><span>$125</span></p>
+              <p class="each">$2.50 each</p>
+            </article>
+            <article class="keychain-price-card price-card" data-qty="100">
+              <h3>100 keychains</h3>
+              <p class="price"><span>$200</span></p>
+              <p class="each">$2.00 each</p>
+            </article>
+          </div>
+          <p class="pricing-note">Order by December 10 · Local delivery or pickup in Howell, Brighton, and Fowlerville, MI</p>
+        </div>
       </div>
     </section>
 

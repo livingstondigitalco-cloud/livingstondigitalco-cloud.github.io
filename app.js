@@ -576,10 +576,10 @@
   }
 
   function syncQtyUI() {
-    document.querySelectorAll(".qty-chip").forEach(function (btn) {
+    document.querySelectorAll("#qty-row .qty-chip").forEach(function (btn) {
       btn.setAttribute("aria-checked", btn.getAttribute("data-qty") === String(state.qty) ? "true" : "false");
     });
-    document.querySelectorAll(".price-card").forEach(function (card) {
+    document.querySelectorAll("#pricing .price-card").forEach(function (card) {
       card.classList.toggle("is-selected", card.getAttribute("data-qty") === String(state.qty));
     });
     updateMailto();
@@ -769,7 +769,7 @@
       requestRender();
     });
 
-    document.querySelectorAll(".price-card").forEach(function (card) {
+    document.querySelectorAll("#pricing .price-card").forEach(function (card) {
       card.addEventListener("click", function () {
         state.qty = Number(card.getAttribute("data-qty"));
         syncQtyUI();
@@ -791,6 +791,166 @@
     render: render,
     setLogoFile: onLogoFile,
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+})();
+
+
+(function () {
+  const EMAIL = "livingstondigitalco@gmail.com";
+  const PAYPAL_BASE =
+    "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Livingston+Laser+Co+keychain+deposit&currency_code=USD";
+  const PRICES = { 25: 75, 50: 125, 100: 200 };
+  const els = {};
+  const state = { qty: 50, logoName: "" };
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function formatMoney(n) {
+    return Number.isInteger(n) ? String(n) : n.toFixed(2);
+  }
+
+  function updateOrder() {
+    const qty = state.qty;
+    const price = PRICES[qty];
+    const deposit = price / 2;
+    const subject = "Logo keychain order — " + qty + " keychains";
+    const logoLine = state.logoName
+      ? "Logo file: " + state.logoName + " (please find it attached)."
+      : "I will attach our logo to this email.";
+    const body = [
+      "Hi Livingston Laser Co,",
+      "",
+      "I'd like to order " + qty + " custom logo keychains ($" + price + ").",
+      "",
+      "Size: 2.5 x 1.25 in rounded rectangle, split ring included.",
+      logoLine,
+      "",
+      "Business name:",
+      "Contact name:",
+      "Phone or best email:",
+      "Delivery city (Howell / Brighton / Fowlerville):",
+      "",
+      "Thank you!",
+    ].join("\n");
+
+    if (els.cta) {
+      els.cta.href =
+        "mailto:" +
+        EMAIL +
+        "?subject=" +
+        encodeURIComponent(subject) +
+        "&body=" +
+        encodeURIComponent(body);
+    }
+    if (els.paypal) {
+      els.paypal.href = PAYPAL_BASE + "&amount=" + formatMoney(deposit);
+    }
+    if (els.depositAmount) {
+      els.depositAmount.textContent = "$" + formatMoney(deposit);
+    }
+  }
+
+  function syncQtyUI() {
+    document.querySelectorAll("#keychain-qty-row .qty-chip").forEach(function (btn) {
+      btn.setAttribute("aria-checked", btn.getAttribute("data-qty") === String(state.qty) ? "true" : "false");
+    });
+    document.querySelectorAll("#keychains .keychain-price-card").forEach(function (card) {
+      card.classList.toggle("is-selected", card.getAttribute("data-qty") === String(state.qty));
+    });
+    updateOrder();
+  }
+
+  function buildQtyRow() {
+    const row = els.qtyRow;
+    if (!row) return;
+    row.innerHTML = "";
+    [25, 50, 100].forEach(function (qty) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "qty-chip";
+      btn.setAttribute("role", "radio");
+      btn.setAttribute("data-qty", String(qty));
+      btn.setAttribute("aria-checked", qty === state.qty ? "true" : "false");
+      btn.innerHTML = "<strong>" + qty + "</strong><em>$" + PRICES[qty] + "</em>";
+      btn.addEventListener("click", function () {
+        state.qty = qty;
+        syncQtyUI();
+      });
+      row.appendChild(btn);
+    });
+  }
+
+  function setDropzoneLabel(name) {
+    if (!els.dropTitle || !els.dropzone) return;
+    if (name) {
+      els.dropTitle.textContent = name;
+      els.dropzone.classList.add("has-file");
+    } else {
+      els.dropTitle.textContent = "Drop a PNG, JPG, or SVG, or click to upload";
+      els.dropzone.classList.remove("has-file");
+    }
+  }
+
+  function onLogoFile(file) {
+    if (!file) return;
+    state.logoName = file.name || "logo";
+    setDropzoneLabel(state.logoName);
+    updateOrder();
+  }
+
+  function bind() {
+    els.qtyRow = $("keychain-qty-row");
+    els.cta = $("keychain-mailto-cta");
+    els.paypal = $("keychain-paypal-cta");
+    els.depositAmount = $("keychain-deposit-amount");
+    els.dropzone = $("keychain-dropzone");
+    els.dropTitle = $("keychain-dropzone-title");
+    els.logoInput = $("keychain-logo-input");
+    if (!els.qtyRow) return;
+
+    buildQtyRow();
+    syncQtyUI();
+
+    if (els.logoInput) {
+      els.logoInput.addEventListener("change", function (e) {
+        const file = e.target.files && e.target.files[0];
+        onLogoFile(file);
+      });
+    }
+
+    if (els.dropzone) {
+      ["dragenter", "dragover"].forEach(function (ev) {
+        els.dropzone.addEventListener(ev, function (e) {
+          e.preventDefault();
+          els.dropzone.classList.add("dragover");
+        });
+      });
+      ["dragleave", "drop"].forEach(function (ev) {
+        els.dropzone.addEventListener(ev, function (e) {
+          e.preventDefault();
+          els.dropzone.classList.remove("dragover");
+        });
+      });
+      els.dropzone.addEventListener("drop", function (e) {
+        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        onLogoFile(file);
+      });
+    }
+
+    document.querySelectorAll("#keychains .keychain-price-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        state.qty = Number(card.getAttribute("data-qty"));
+        syncQtyUI();
+      });
+    });
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", bind);

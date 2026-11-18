@@ -44,7 +44,7 @@ html {
   scroll-padding-top: calc(var(--header) + 12px);
 }
 
-#designer, #pricing, #order, #preview {
+#designer, #pricing, #order, #preview, #keychains, #keychain-order {
   scroll-margin-top: calc(var(--header) + 12px);
 }
 
@@ -688,7 +688,20 @@ input[type="range"]::-moz-range-thumb {
 }
 
 @media (max-width: 879px) {
-  .nav a:not(.nav-cta) { display: none; }
+  :root { --header: 118px; }
+  .header-inner {
+    flex-wrap: wrap;
+    min-height: auto;
+    padding-top: 0.4rem;
+  }
+  .nav a:not(.nav-cta):not(.nav-product) { display: none; }
+  .nav {
+    flex: 1 1 100%;
+    justify-content: flex-end;
+    gap: 0.9rem;
+    font-size: 0.92rem;
+    padding: 0.15rem 0 0.45rem;
+  }
   .hero { padding: 2.25rem 0 1.75rem; }
   .qty-row { grid-template-columns: repeat(3, 1fr); }
 }
@@ -704,3 +717,32 @@ input[type="range"]::-moz-range-thumb {
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+.keychains {
+  border-top: 1px solid var(--line);
+  padding-top: 3.5rem;
+}
+
+.keychain-stage {
+  width: min(100%, 560px);
+  padding: 1.75rem 1.1rem 1.2rem;
+}
+
+.keychain-stage img,
+.keychain-stage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.keychain-pricing {
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 880px) {
+  #keychains .preview-col {
+    position: sticky;
+    top: calc(var(--header) + 12px);
+  }
+}
+
