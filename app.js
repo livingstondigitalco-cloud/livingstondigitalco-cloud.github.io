@@ -211,27 +211,66 @@
     const ctx = c.getContext("2d", { willReadFrequently: true });
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(img, 0, 0, w, h);
-    const data = ctx.getImageData(0, 0, w, h);
-    const cov = new Float32Array(w * h);
-    let minX = w,
-      minY = h,
-      maxX = 0,
-      maxY = 0;
+    const px = ctx.getImageData(0, 0, w, h).data;
+    const n = w * h;
+
+    /* Work out the background from the border pixels. Logos come as dark or
+       colored marks on white, light marks on dark, or any color on a
+       transparent field, so measure each pixel's contrast against that
+       background instead of its raw darkness. */
+    let bR = 0, bG = 0, bB = 0, bN = 0, clearEdge = 0, edgeN = 0;
+    function edge(i) {
+      const o = i * 4;
+      edgeN++;
+      if (px[o + 3] < 128) { clearEdge++; return; }
+      bR += px[o]; bG += px[o + 1]; bB += px[o + 2]; bN++;
+    }
+    for (let x = 0; x < w; x++) { edge(x); edge((h - 1) * w + x); }
+    for (let y = 1; y < h - 1; y++) { edge(y * w); edge(y * w + w - 1); }
+    const clearBg = clearEdge / Math.max(1, edgeN) > 0.5 || bN === 0;
+    if (bN) { bR /= bN; bG /= bN; bB /= bN; }
+
+    const raw = new Float32Array(n);
+    const alpha = new Float32Array(n);
+    let minL = 1, maxL = 0, maxD = 0;
+    for (let i = 0; i < n; i++) {
+      const o = i * 4;
+      const a = px[o + 3] / 255;
+      alpha[i] = a;
+      if (a < 0.04) continue;
+      if (clearBg) {
+        const lum = (0.299 * px[o] + 0.587 * px[o + 1] + 0.114 * px[o + 2]) / 255;
+        raw[i] = lum;
+        if (a > 0.5) { if (lum < minL) minL = lum; if (lum > maxL) maxL = lum; }
+      } else {
+        const dr = px[o] - bR, dg = px[o + 1] - bG, db = px[o + 2] - bB;
+        const d = Math.sqrt(dr * dr + dg * dg + db * db) / 441.7;
+        raw[i] = d;
+        if (d > maxD) maxD = d;
+      }
+    }
+    const range = maxL - minL;
+    const dNorm = Math.max(maxD, 0.12);
+
+    const cov = new Float32Array(n);
+    let minX = w, minY = h, maxX = 0, maxY = 0;
     const cutoff = 1 - threshold;
     const soft = 0.05;
-    for (let i = 0; i < cov.length; i++) {
-      const o = i * 4;
-      const a = data.data[o + 3] / 255;
+    for (let i = 0; i < n; i++) {
+      const a = alpha[i];
       if (a < 0.04) continue;
-      const lum =
-        (0.299 * data.data[o] +
-          0.587 * data.data[o + 1] +
-          0.114 * data.data[o + 2]) /
-        255;
-      const ink = invert ? lum : 1 - lum;
+      let ink;
+      if (clearBg) {
+        /* Transparent field: every visible pixel is part of the logo. Lighter
+           details inside a multi-tone logo stay unburned. */
+        ink = range < 0.25 ? 1 : (maxL - raw[i]) / range;
+      } else {
+        ink = Math.min(1, raw[i] / dNorm);
+      }
+      if (invert) ink = 1 - ink;
       let v = (ink - (cutoff - soft)) / (2 * soft);
       v = Math.max(0, Math.min(1, v));
-      v = v * v * (3 - 2 * v) * a;
+      v = v * v * (3 - 2 * v) * (clearBg ? a : 1);
       if (v <= 0.02) continue;
       cov[i] = v;
       if (v <= 0.08) continue;
@@ -693,12 +732,9 @@
       state.logoName = file.name || "logo";
       setDropzoneLabel(state.logoName);
       if (!state.invertTouched) {
-        const stats = meanLuminance(img);
-        /* Light marks (white/pale logos, often on a transparent field) need invert.
-           A mostly-opaque dark field with a light logo also needs invert. */
-        const next =
-          (stats.n > 0 && stats.lum >= 0.72) ||
-          (stats.opaqueRatio > 0.65 && stats.lum < 0.38);
+        /* Contrast against the detected background handles light, dark, and
+           colored logos, so start un-inverted. */
+        const next = false;
         state.invert = next;
         els.invert.checked = next;
       }
