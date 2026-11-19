@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Custom laser-engraved basswood holiday ornaments and logo keychains. Handmade in Howell, Michigan, and shipped anywhere in the U.S. Order by December 10.">
+  <meta name="description" content="Custom laser-engraved basswood holiday ornaments and logo keychains. Handmade in Howell, Michigan, and shipped anywhere in the U.S. You approve a proof before anything is made. Holiday orders close December 10.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://livingstondigitalco-cloud.github.io/">
+  <meta property="og:title" content="Livingston Laser Co — Custom Logo Ornaments &amp; Keychains">
+  <meta property="og:description" content="See your logo on a handmade basswood ornament or keychain. Proof before anything is made. Ships anywhere in the U.S.">
+  <link rel="canonical" href="https://livingstondigitalco-cloud.github.io/">
   <meta name="theme-color" content="#f6efe3">
   <title>Livingston Laser Co — Custom Holiday Ornaments &amp; Logo Keychains</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip" href="#designer">Skip to the preview tool</a>
+  <a class="skip" href="#designer">Skip to the ornament designer</a>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -35,7 +40,7 @@
       <div class="wrap hero-inner">
         <p class="eyebrow">Holiday 2026 · Handmade basswood</p>
         <h1>See your logo on a handmade holiday ornament</h1>
-        <p class="lede">Upload a logo and we’ll show you a live preview of a laser-engraved 3&nbsp;mm basswood ornament. Every order is handmade in Howell, Michigan, and ships anywhere in the U.S.</p>
+        <p class="lede">Upload your logo and see a live preview of it laser-engraved on a 3&nbsp;mm basswood ornament or keychain. Every order starts with a proof you approve, and every piece is handmade in Howell, Michigan, and ships anywhere in the U.S.</p>
         <p class="hero-actions">
           <a class="btn btn-primary" href="#designer">Upload your logo</a>
           <a class="btn btn-ghost" href="#pricing">Ornament pricing</a>
@@ -62,16 +67,16 @@
             <p class="preview-note">Each ornament ships with a thin red ribbon loop, ready to hang.</p>
           </div>
 
-          <form class="controls" id="controls" action="#" onsubmit="return false;">
+          <form class="controls" id="controls" data-product="ornament" data-pfx="orn" action="https://formsubmit.co/livingstondigitalco@gmail.com" method="POST" enctype="multipart/form-data" accept-charset="UTF-8" novalidate>
             <div class="field">
               <span class="label" id="logo-label">Your logo</span>
               <label class="dropzone" id="dropzone" for="logo-input">
-                <input id="logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="logo-label">
+                <input id="logo-input" name="attachment" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="logo-label">
                 <span class="dropzone-icon" aria-hidden="true">
                   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/><path d="M16 10v12M10 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                 </span>
                 <span class="dropzone-title" id="dropzone-title">Drop a PNG, JPG, or SVG, or click to upload</span>
-                <span class="dropzone-sub">We’ll convert it to a laser-ready monochrome burn.</span>
+                <span class="dropzone-sub">It appears on the ornament preview right away. Up to 10&nbsp;MB.</span>
               </label>
               <details class="upload-tips">
                 <summary>Tips for a crisp engraving</summary>
@@ -92,19 +97,19 @@
 
             <div class="field">
               <label class="label" for="custom-text">Optional text under the logo</label>
-              <input type="text" id="custom-text" maxlength="36" placeholder="Happy Holidays 2026" autocomplete="off">
+              <input type="text" id="custom-text" name="Custom text" maxlength="36" placeholder="Happy Holidays 2026" autocomplete="off">
             </div>
 
             <div class="field sliders">
               <div class="slider-row">
-                <label class="label" for="threshold">Threshold <span class="value-readout" id="threshold-readout">50</span></label>
+                <label class="label" for="threshold">Engraving detail <span class="value-readout" id="threshold-readout">50</span></label>
                 <input type="range" id="threshold" min="10" max="90" value="50" step="1">
-                <p class="hint">Lower keeps only the darkest marks. Raise it to pick up lighter detail.</p>
+                <p class="hint">Slide right to pick up lighter parts of your logo, or left to keep only the boldest parts. This only changes the preview. We fine-tune the real engraving for your proof.</p>
               </div>
               <label class="toggle">
                 <input type="checkbox" id="invert">
                 <span class="toggle-ui" aria-hidden="true"></span>
-                <span>Invert <span class="toggle-help">Use this for a light logo on a dark background</span></span>
+                <span>Swap light and dark <span class="toggle-help">Try this if the preview looks backwards</span></span>
               </label>
             </div>
 
@@ -114,12 +119,88 @@
             </fieldset>
 
             <div class="order-box" id="order">
-              <p class="order-line">Order by <strong>December 10</strong> for holiday delivery.</p>
+              <p class="order-summary" id="orn-summary" aria-live="polite">Your order: <strong>50 ornaments</strong></p>
+              <p class="order-line">Order by <strong>December 10</strong>. Every order is finished by <strong>December 15</strong>.</p>
               <p class="order-line">Ships anywhere in the <strong>U.S.</strong> Local pickup is available in Howell, MI.</p>
-              <a class="btn btn-primary btn-cta" id="mailto-cta" href="mailto:livingstondigitalco@gmail.com">Email your logo and quantity to livingstondigitalco@gmail.com</a>
-              <p class="hint cta-hint">Your email app will open with the quantity and style filled in. Please attach your logo file to the message.</p>
-              <p class="deposit-note">Orders start with that email. We’ll send a proof of your ornament, and the 50% deposit (<span id="deposit-amount">$87.50</span>) is paid after you approve the proof. The rest is due before your order ships or at pickup.</p>
-              <a class="btn btn-deposit btn-cta" id="paypal-cta" href="#">Pay 50% deposit with PayPal</a>
+
+              <div class="thanks" id="orn-thanks" tabindex="-1" hidden>
+                <h3>Thank you! We got your order.</h3>
+                <p>We’ll email you a proof within about a day. The 50% deposit is paid after you approve the proof.</p>
+                <p class="hint">Didn’t attach your logo? Just email it to livingstondigitalco@gmail.com and mention your business name.</p>
+                <button type="button" class="btn btn-ghost thanks-again" data-again="orn">Start another order</button>
+              </div>
+
+              <div class="order-fields" id="orn-fields">
+                <h3 class="order-title">Send your order</h3>
+                <p class="hint order-intro">No payment now. Fill this in and we’ll email you a proof before anything is made.</p>
+                <input type="hidden" name="_subject" id="orn-f-subject" value="New ornament order">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" id="orn-f-next" value="https://livingstondigitalco-cloud.github.io/?thanks=ornament#order">
+                <input type="hidden" name="_replyto" id="orn-f-replyto" value="">
+                <input type="hidden" name="Product" value="Custom logo holiday ornaments">
+                <input type="hidden" name="Quantity" id="orn-f-qty" value="50">
+                <input type="hidden" name="Price" id="orn-f-price" value="">
+                <input type="hidden" name="Deposit (50%, paid after proof approval)" id="orn-f-deposit" value="">
+                <input type="hidden" name="Style" id="orn-f-style" value="Ornate Bauble">
+                <input type="hidden" name="Logo file" id="orn-f-logo" value="">
+                <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label class="label" for="orn-business">Business name <span class="req">required</span></label>
+                    <input type="text" id="orn-business" name="Business name" autocomplete="organization" maxlength="120" required>
+                    <p class="field-error" id="orn-business-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="orn-contact">Your name <span class="req">required</span></label>
+                    <input type="text" id="orn-contact" name="Contact name" autocomplete="name" maxlength="120" required>
+                    <p class="field-error" id="orn-contact-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="orn-email">Email <span class="req">required</span></label>
+                    <input type="email" id="orn-email" name="email" autocomplete="email" inputmode="email" maxlength="160" required>
+                    <p class="field-error" id="orn-email-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="orn-phone">Phone <span class="opt">optional</span></label>
+                    <input type="tel" id="orn-phone" name="Phone" autocomplete="tel" maxlength="40">
+                  </div>
+                  <div class="form-field form-wide">
+                    <label class="label" for="orn-ship">Ship to (city and state)</label>
+                    <input type="text" id="orn-ship" name="Ship to" autocomplete="address-level2" maxlength="120" placeholder="Ann Arbor, MI">
+                    <label class="check"><input type="checkbox" id="orn-pickup" name="Local pickup" value="Yes, local pickup in Howell, MI"> <span>I’ll pick up locally in Howell, MI instead</span></label>
+                    <p class="field-error" id="orn-ship-err" hidden></p>
+                  </div>
+                  <div class="form-field form-wide">
+                    <label class="label" for="orn-notes">Notes <span class="opt">optional</span></label>
+                    <textarea id="orn-notes" name="Notes" rows="3" maxlength="1500" placeholder="Anything we should know, like a date you need them by or which logo colors to use"></textarea>
+                  </div>
+                  <div class="form-field form-wide">
+                    <span class="label">Logo</span>
+                    <p class="logo-status" id="orn-logo-status">No logo added yet. Upload it in the box above.</p>
+                    <label class="check"><input type="checkbox" id="orn-logo-later" name="Logo" value="Customer will email the logo later"> <span>I’ll email my logo later</span></label>
+                    <p class="field-error" id="orn-logo-err" hidden></p>
+                  </div>
+                </div>
+
+                <p class="form-error" id="orn-form-err" role="alert" hidden></p>
+                <button type="submit" class="btn btn-primary btn-cta" id="orn-submit">Send my order request</button>
+                <p class="hint cta-hint">Your logo file is sent with the form. No email app needed.</p>
+
+                <div class="fallback">
+                  <p>Prefer email? Write to <strong class="addr">livingstondigitalco@gmail.com</strong></p>
+                  <p class="fallback-actions">
+                    <button type="button" class="link-btn copy-addr" data-copy="livingstondigitalco@gmail.com">Copy address</button>
+                    <a class="link-btn" id="orn-gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=livingstondigitalco@gmail.com" target="_blank" rel="noopener">Open in Gmail</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="deposit-box">
+                <p class="deposit-note"><strong>Already approved your proof?</strong> Pay the 50% deposit of <span id="orn-deposit-amount">$0</span> for <span id="orn-deposit-qty">50 ornaments</span> here. The rest is due before your order ships or at pickup.</p>
+                <a class="btn btn-deposit btn-cta" id="orn-paypal" href="#" target="_blank" rel="noopener">Pay 50% deposit with PayPal</a>
+              </div>
             </div>
           </form>
         </div>
@@ -134,24 +215,24 @@
           <p>Each set is a single logo and style, engraved on 3&nbsp;mm basswood, shipped anywhere in the U.S.<br>Each ornament ships with a thin red ribbon loop, ready to hang.</p>
         </div>
         <div class="price-grid">
-          <article class="price-card" data-qty="25">
+          <article class="price-card" data-qty="25" tabindex="0" role="button" aria-label="Choose 25 ornaments">
             <h3>25 ornaments</h3>
             <p class="price"><span>$100</span></p>
             <p class="each">$4.00 each</p>
           </article>
-          <article class="price-card featured" data-qty="50">
+          <article class="price-card featured" data-qty="50" tabindex="0" role="button" aria-label="Choose 50 ornaments">
             <p class="badge">Popular</p>
             <h3>50 ornaments</h3>
             <p class="price"><span>$175</span></p>
             <p class="each">$3.50 each</p>
           </article>
-          <article class="price-card" data-qty="100">
+          <article class="price-card" data-qty="100" tabindex="0" role="button" aria-label="Choose 100 ornaments">
             <h3>100 ornaments</h3>
             <p class="price"><span>$300</span></p>
             <p class="each">$3.00 each</p>
           </article>
         </div>
-        <p class="pricing-note">Order by December 10 · Ships anywhere in the U.S.</p>
+        <p class="pricing-note">Order by December 10 · Every order finished by December 15 · Ships anywhere in the U.S.</p>
       </div>
     </section>
 
@@ -167,22 +248,23 @@
         <div class="designer-grid">
           <div class="preview-col">
             <div class="preview-stage keychain-stage" id="keychain-stage">
-              <img src="keychain.svg" width="720" height="320" alt="Preview of a basswood logo keychain with a split ring and a placeholder logo engraved in the center">
+              <canvas id="keychain-canvas" width="1440" height="640" role="img" aria-label="Preview of a basswood logo keychain with a split ring and your logo engraved in the center"></canvas>
+              <noscript><img src="keychain.svg" width="720" height="320" alt="Basswood logo keychain with a split ring"></noscript>
             </div>
             <p class="preview-note">3&nbsp;mm basswood · 2.5&nbsp;×&nbsp;1.25&nbsp;in rounded rectangle · split ring included</p>
-            <p class="preview-note">The preview shows the size and shape. We’ll send a proof with your logo before cutting.</p>
+            <p class="preview-note">Upload your logo to see it on the keychain. We’ll email you a proof before anything is cut.</p>
           </div>
 
-          <form class="controls" id="keychain-controls" action="#" onsubmit="return false;">
+          <form class="controls" id="keychain-controls" data-product="keychain" data-pfx="kc" action="https://formsubmit.co/livingstondigitalco@gmail.com" method="POST" enctype="multipart/form-data" accept-charset="UTF-8" novalidate>
             <div class="field">
               <span class="label" id="keychain-logo-label">Your logo</span>
               <label class="dropzone" id="keychain-dropzone" for="keychain-logo-input">
-                <input id="keychain-logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="keychain-logo-label">
+                <input id="keychain-logo-input" name="attachment" type="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg" aria-labelledby="keychain-logo-label">
                 <span class="dropzone-icon" aria-hidden="true">
                   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.4"/><path d="M16 10v12M10 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
                 </span>
                 <span class="dropzone-title" id="keychain-dropzone-title">Drop a PNG, JPG, or SVG, or click to upload</span>
-                <span class="dropzone-sub">We’ll engrave it as a monochrome burn on the keychain.</span>
+                <span class="dropzone-sub">It appears on the keychain preview right away. Up to 10&nbsp;MB.</span>
               </label>
               <details class="upload-tips">
                 <summary>Tips for a crisp engraving</summary>
@@ -202,36 +284,112 @@
             </fieldset>
 
             <div class="order-box" id="keychain-order">
-              <p class="order-line">Order by <strong>December 10</strong> for holiday delivery.</p>
+              <p class="order-summary" id="kc-summary" aria-live="polite">Your order: <strong>50 keychains</strong></p>
+              <p class="order-line">Keychains are available year-round. For delivery before Christmas, order by <strong>December 10</strong>.</p>
               <p class="order-line">Ships anywhere in the <strong>U.S.</strong> Local pickup is available in Howell, MI.</p>
-              <a class="btn btn-primary btn-cta" id="keychain-mailto-cta" href="mailto:livingstondigitalco@gmail.com">Email your logo and quantity to livingstondigitalco@gmail.com</a>
-              <p class="hint cta-hint">Your email app will open with the quantity filled in. Please attach your logo file to the message.</p>
-              <p class="deposit-note">Orders start with that email. We’ll send a proof of your keychain, and the 50% deposit (<span id="keychain-deposit-amount">$62.50</span>) is paid after you approve the proof. The rest is due before your order ships or at pickup.</p>
-              <a class="btn btn-deposit btn-cta" id="keychain-paypal-cta" href="#">Pay 50% deposit with PayPal</a>
+
+              <div class="thanks" id="kc-thanks" tabindex="-1" hidden>
+                <h3>Thank you! We got your order.</h3>
+                <p>We’ll email you a proof within about a day. The 50% deposit is paid after you approve the proof.</p>
+                <p class="hint">Didn’t attach your logo? Just email it to livingstondigitalco@gmail.com and mention your business name.</p>
+                <button type="button" class="btn btn-ghost thanks-again" data-again="kc">Start another order</button>
+              </div>
+
+              <div class="order-fields" id="kc-fields">
+                <h3 class="order-title">Send your order</h3>
+                <p class="hint order-intro">No payment now. Fill this in and we’ll email you a proof before anything is made.</p>
+                <input type="hidden" name="_subject" id="kc-f-subject" value="New keychain order">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" id="kc-f-next" value="https://livingstondigitalco-cloud.github.io/?thanks=keychain#keychain-order">
+                <input type="hidden" name="_replyto" id="kc-f-replyto" value="">
+                <input type="hidden" name="Product" value="Custom logo keychains">
+                <input type="hidden" name="Quantity" id="kc-f-qty" value="50">
+                <input type="hidden" name="Price" id="kc-f-price" value="">
+                <input type="hidden" name="Deposit (50%, paid after proof approval)" id="kc-f-deposit" value="">
+                <input type="hidden" name="Size" value="2.5 x 1.25 in rounded rectangle, 3 mm basswood, split ring included">
+                <input type="hidden" name="Logo file" id="kc-f-logo" value="">
+                <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label class="label" for="kc-business">Business name <span class="req">required</span></label>
+                    <input type="text" id="kc-business" name="Business name" autocomplete="organization" maxlength="120" required>
+                    <p class="field-error" id="kc-business-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="kc-contact">Your name <span class="req">required</span></label>
+                    <input type="text" id="kc-contact" name="Contact name" autocomplete="name" maxlength="120" required>
+                    <p class="field-error" id="kc-contact-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="kc-email">Email <span class="req">required</span></label>
+                    <input type="email" id="kc-email" name="email" autocomplete="email" inputmode="email" maxlength="160" required>
+                    <p class="field-error" id="kc-email-err" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="label" for="kc-phone">Phone <span class="opt">optional</span></label>
+                    <input type="tel" id="kc-phone" name="Phone" autocomplete="tel" maxlength="40">
+                  </div>
+                  <div class="form-field form-wide">
+                    <label class="label" for="kc-ship">Ship to (city and state)</label>
+                    <input type="text" id="kc-ship" name="Ship to" autocomplete="address-level2" maxlength="120" placeholder="Ann Arbor, MI">
+                    <label class="check"><input type="checkbox" id="kc-pickup" name="Local pickup" value="Yes, local pickup in Howell, MI"> <span>I’ll pick up locally in Howell, MI instead</span></label>
+                    <p class="field-error" id="kc-ship-err" hidden></p>
+                  </div>
+                  <div class="form-field form-wide">
+                    <label class="label" for="kc-notes">Notes <span class="opt">optional</span></label>
+                    <textarea id="kc-notes" name="Notes" rows="3" maxlength="1500" placeholder="Anything we should know, like a date you need them by or which logo colors to use"></textarea>
+                  </div>
+                  <div class="form-field form-wide">
+                    <span class="label">Logo</span>
+                    <p class="logo-status" id="kc-logo-status">No logo added yet. Upload it in the box above.</p>
+                    <label class="check"><input type="checkbox" id="kc-logo-later" name="Logo" value="Customer will email the logo later"> <span>I’ll email my logo later</span></label>
+                    <p class="field-error" id="kc-logo-err" hidden></p>
+                  </div>
+                </div>
+
+                <p class="form-error" id="kc-form-err" role="alert" hidden></p>
+                <button type="submit" class="btn btn-primary btn-cta" id="kc-submit">Send my order request</button>
+                <p class="hint cta-hint">Your logo file is sent with the form. No email app needed.</p>
+
+                <div class="fallback">
+                  <p>Prefer email? Write to <strong class="addr">livingstondigitalco@gmail.com</strong></p>
+                  <p class="fallback-actions">
+                    <button type="button" class="link-btn copy-addr" data-copy="livingstondigitalco@gmail.com">Copy address</button>
+                    <a class="link-btn" id="kc-gmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=livingstondigitalco@gmail.com" target="_blank" rel="noopener">Open in Gmail</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="deposit-box">
+                <p class="deposit-note"><strong>Already approved your proof?</strong> Pay the 50% deposit of <span id="kc-deposit-amount">$0</span> for <span id="kc-deposit-qty">50 keychains</span> here. The rest is due before your order ships or at pickup.</p>
+                <a class="btn btn-deposit btn-cta" id="kc-paypal" href="#" target="_blank" rel="noopener">Pay 50% deposit with PayPal</a>
+              </div>
             </div>
           </form>
         </div>
 
         <div class="keychain-pricing">
           <div class="price-grid">
-            <article class="keychain-price-card price-card" data-qty="25">
+            <article class="keychain-price-card price-card" data-qty="25" tabindex="0" role="button" aria-label="Choose 25 keychains">
               <h3>25 keychains</h3>
               <p class="price"><span>$75</span></p>
               <p class="each">$3.00 each</p>
             </article>
-            <article class="keychain-price-card price-card featured" data-qty="50">
+            <article class="keychain-price-card price-card featured" data-qty="50" tabindex="0" role="button" aria-label="Choose 50 keychains">
               <p class="badge">Popular</p>
               <h3>50 keychains</h3>
               <p class="price"><span>$125</span></p>
               <p class="each">$2.50 each</p>
             </article>
-            <article class="keychain-price-card price-card" data-qty="100">
+            <article class="keychain-price-card price-card" data-qty="100" tabindex="0" role="button" aria-label="Choose 100 keychains">
               <h3>100 keychains</h3>
               <p class="price"><span>$200</span></p>
               <p class="each">$2.00 each</p>
             </article>
           </div>
-          <p class="pricing-note">Order by December 10 · Ships anywhere in the U.S.</p>
+          <p class="pricing-note">Available year-round · Order by December 10 for Christmas delivery · Ships anywhere in the U.S.</p>
         </div>
       </div>
     </section>
@@ -246,17 +404,17 @@
           <li>
             <span class="step-num">1</span>
             <h3>Upload and preview</h3>
-            <p>Drop in your logo, pick a style, and adjust the engraving until it looks right.</p>
+            <p>Add your logo and see it on an ornament or keychain. Pick a style and how many you need.</p>
           </li>
           <li>
             <span class="step-num">2</span>
-            <h3>Email your order</h3>
-            <p>Send the logo and quantity to livingstondigitalco@gmail.com. We’ll send a proof to approve, then a 50% deposit holds your order.</p>
+            <h3>Send your order</h3>
+            <p>Fill in the short order form. There’s no payment yet. We’ll email you a proof of your design within about a day.</p>
           </li>
           <li>
             <span class="step-num">3</span>
-            <h3>We engrave and ship</h3>
-            <p>Each ornament is laser-engraved and cut from basswood, then shipped to you anywhere in the U.S., or picked up locally in Howell. The balance is due before it ships.</p>
+            <h3>Approve, and we make it</h3>
+            <p>Once you approve the proof, a 50% deposit holds your order. We laser-engrave and cut each piece from basswood, then ship anywhere in the U.S. or have it ready for pickup in Howell. The balance is due before it ships or at pickup.</p>
           </li>
         </ol>
       </div>
@@ -265,7 +423,8 @@
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p>Livingston Laser Co, Howell, MI</p>
+      <p>Livingston Laser Co · Howell, Michigan</p>
+      <p class="footer-links"><a href="#designer">Ornaments</a> · <a href="#keychains">Keychains</a> · <a href="#pricing">Pricing</a> · Questions? <strong>livingstondigitalco@gmail.com</strong></p>
     </div>
   </footer>
 

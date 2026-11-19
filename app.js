@@ -1,3 +1,37 @@
+/* Livingston Laser Co — ornament + keychain previews and order forms (static site; orders post to FormSubmit). */
+window.__laser = window.__laser || {};
+(function (L) {
+  "use strict";
+  L.MAX_BYTES = 10 * 1024 * 1024;
+  L.isSupported = function (file) {
+    return /^image\/(png|jpeg|svg\+xml)$/.test(file.type || "") || /\.(png|jpe?g|svg)$/i.test(file.name || "");
+  };
+  L.putFileInInput = function (input, file) {
+    if (!input || !file) return;
+    try {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+    } catch (err) {
+      /* Older browsers: the preview still works; the order form will ask for the file. */
+    }
+  };
+  L.bindPriceCard = function (card, select, targetId) {
+    function go() {
+      select();
+      const t = document.getElementById(targetId);
+      if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    card.addEventListener("click", go);
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        go();
+      }
+    });
+  };
+})(window.__laser);
+
 /* Livingston Laser Co — ornament preview (static, no backend). */
 (function () {
   "use strict";
@@ -577,46 +611,33 @@
   function updateMailto() {
     const qty = state.qty;
     const price = PRICES[qty];
+    const deposit = price / 2;
     const style = currentStyleName();
-    const text = (state.text || "").trim();
-    const subject = "Holiday ornament order — " + qty + " ornaments";
-    const logoLine = state.logoName
-      ? "Logo file: " + state.logoName + " (please find it attached)."
-      : "I will attach our logo to this email.";
-    const body = [
-      "Hi Livingston Laser Co,",
-      "",
-      "I'd like to order " + qty + " custom ornaments ($" + price + ").",
-      "",
-      "Style: " + style,
-      "Custom text: " + (text || "(none)"),
-      logoLine,
-      "",
-      "Business name:",
-      "Contact name:",
-      "Phone or best email:",
-      "Ship to (city and state), or local pickup in Howell:",
-      "",
-      "Thank you!",
-    ].join("\n");
-    els.cta.href =
-      "mailto:" +
-      EMAIL +
-      "?subject=" +
-      encodeURIComponent(subject) +
-      "&body=" +
-      encodeURIComponent(body);
+    const money = function (n) {
+      return "$" + (Number.isInteger(n) ? String(n) : n.toFixed(2));
+    };
+    function setVal(id, v) {
+      const el = $(id);
+      if (el) el.value = v;
+    }
+    setVal("orn-f-subject", "New ornament order — " + qty + " ornaments");
+    setVal("orn-f-qty", qty + " ornaments");
+    setVal("orn-f-price", money(price) + " (" + money(price / qty) + " each)");
+    setVal("orn-f-deposit", money(deposit));
+    setVal("orn-f-style", style);
+    setVal("orn-f-next", "https://livingstondigitalco-cloud.github.io/?thanks=ornament&qty=" + qty + "#order");
+    if (els.summary) {
+      els.summary.innerHTML =
+        "Your order: <strong>" + qty + " ornaments</strong> · " + style + " · <strong>" + money(price) + "</strong>";
+    }
     if (els.paypal) {
-      const dep = price / 2;
       els.paypal.href =
         PAYPAL_URL.replace("ornament+deposit", "ornament+deposit+-+" + qty + "+ornaments") +
-        "&amount=" + dep.toFixed(2);
+        "&amount=" + deposit.toFixed(2);
     }
-    if (els.depositAmount) {
-      const deposit = price / 2;
-      els.depositAmount.textContent =
-        "$" + (Number.isInteger(deposit) ? String(deposit) : deposit.toFixed(2));
-    }
+    if (els.depositAmount) els.depositAmount.textContent = money(deposit);
+    if (els.depositQty) els.depositQty.textContent = qty + " ornaments";
+    document.dispatchEvent(new CustomEvent("llc:orderchange", { detail: { pfx: "orn" } }));
   }
 
   function syncQtyUI() {
@@ -726,6 +747,10 @@
 
   async function onLogoFile(file) {
     if (!file) return;
+    if (!window.__laser.isSupported(file)) {
+      els.dropTitle.textContent = "That file type won’t work. Please use a PNG, JPG, or SVG.";
+      return;
+    }
     try {
       const img = await fileToImage(file);
       state.logo = img;
@@ -740,9 +765,10 @@
       }
       updateMailto();
       requestRender();
+      document.dispatchEvent(new CustomEvent("llc:logo", { detail: { pfx: "orn", name: state.logoName } }));
     } catch (err) {
-      console.error(err);
-      els.dropTitle.textContent = "Could not read that file. Try a PNG, JPG, or SVG.";
+      console.warn(err);
+      els.dropTitle.textContent = "We couldn’t read that file. Try a PNG, JPG, or SVG.";
     }
   }
 
@@ -752,9 +778,10 @@
     els.stage = $("preview-stage");
     els.styleGrid = $("style-grid");
     els.qtyRow = $("qty-row");
-    els.cta = $("mailto-cta");
-    els.paypal = $("paypal-cta");
-    els.depositAmount = $("deposit-amount");
+    els.summary = $("orn-summary");
+    els.paypal = $("orn-paypal");
+    els.depositAmount = $("orn-deposit-amount");
+    els.depositQty = $("orn-deposit-qty");
     els.dropzone = $("dropzone");
     els.dropTitle = $("dropzone-title");
     els.logoInput = $("logo-input");
@@ -765,6 +792,11 @@
 
     els.canvas.width = DESIGN + SHADOW_PAD * 2;
     els.canvas.height = DESIGN + RIBBON_PAD + SHADOW_PAD;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("thanks") === "ornament" && PRICES[Number(params.get("qty"))]) {
+      state.qty = Number(params.get("qty"));
+    }
 
     buildStyleGrid();
     buildQtyRow();
@@ -789,7 +821,12 @@
     });
     els.dropzone.addEventListener("drop", function (e) {
       const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) window.__laser.putFileInInput(els.logoInput, file);
       onLogoFile(file);
+    });
+
+    els.text.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") e.preventDefault();
     });
 
     els.threshold.addEventListener("input", function () {
@@ -811,10 +848,10 @@
     });
 
     document.querySelectorAll("#pricing .price-card").forEach(function (card) {
-      card.addEventListener("click", function () {
+      window.__laser.bindPriceCard(card, function () {
         state.qty = Number(card.getAttribute("data-qty"));
         syncQtyUI();
-      });
+      }, "order");
     });
 
     window.addEventListener("resize", positionRibbon);
@@ -832,6 +869,10 @@
     render: render,
     setLogoFile: onLogoFile,
   };
+  window.__laser.fileToImage = fileToImage;
+  window.__laser.processLogo = processLogo;
+  window.__laser.loadImage = loadImage;
+  window.__laser.BURN = BURN;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", bind);
@@ -841,61 +882,53 @@
 })();
 
 
+/* Logo keychains: live preview, quantity, deposit. */
 (function () {
-  const EMAIL = "livingstondigitalco@gmail.com";
+  "use strict";
+  const L = window.__laser;
   const PAYPAL_BASE =
     "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Livingston+Laser+Co+keychain+deposit&currency_code=USD";
   const PRICES = { 25: 75, 50: 125, 100: 200 };
+  /* Engrave area on keychain.svg (720 x 320 units): right of the ring hole. */
+  const AREA = { x: 262, y: 92, w: 380, h: 136 };
+  const SCALE = 2;
   const els = {};
-  const state = { qty: 50, logoName: "" };
+  const state = { qty: 50, logoName: "", logo: null };
+  let svgText = null;
 
   function $(id) {
     return document.getElementById(id);
   }
 
-  function formatMoney(n) {
-    return Number.isInteger(n) ? String(n) : n.toFixed(2);
+  function money(n) {
+    return "$" + (Number.isInteger(n) ? String(n) : n.toFixed(2));
   }
 
   function updateOrder() {
     const qty = state.qty;
     const price = PRICES[qty];
     const deposit = price / 2;
-    const subject = "Logo keychain order — " + qty + " keychains";
-    const logoLine = state.logoName
-      ? "Logo file: " + state.logoName + " (please find it attached)."
-      : "I will attach our logo to this email.";
-    const body = [
-      "Hi Livingston Laser Co,",
-      "",
-      "I'd like to order " + qty + " custom logo keychains ($" + price + ").",
-      "",
-      "Size: 2.5 x 1.25 in rounded rectangle, split ring included.",
-      logoLine,
-      "",
-      "Business name:",
-      "Contact name:",
-      "Phone or best email:",
-      "Ship to (city and state), or local pickup in Howell:",
-      "",
-      "Thank you!",
-    ].join("\n");
-
-    if (els.cta) {
-      els.cta.href =
-        "mailto:" +
-        EMAIL +
-        "?subject=" +
-        encodeURIComponent(subject) +
-        "&body=" +
-        encodeURIComponent(body);
+    function setVal(id, v) {
+      const el = $(id);
+      if (el) el.value = v;
+    }
+    setVal("kc-f-subject", "New keychain order — " + qty + " keychains");
+    setVal("kc-f-qty", qty + " keychains");
+    setVal("kc-f-price", money(price) + " (" + money(price / qty) + " each)");
+    setVal("kc-f-deposit", money(deposit));
+    setVal("kc-f-next", "https://livingstondigitalco-cloud.github.io/?thanks=keychain&qty=" + qty + "#keychain-order");
+    if (els.summary) {
+      els.summary.innerHTML =
+        "Your order: <strong>" + qty + " logo keychains</strong> · 2.5 × 1.25 in · <strong>" + money(price) + "</strong>";
     }
     if (els.paypal) {
-      els.paypal.href = PAYPAL_BASE.replace("keychain+deposit", "keychain+deposit+-+" + qty + "+keychains") + "&amount=" + formatMoney(deposit);
+      els.paypal.href =
+        PAYPAL_BASE.replace("keychain+deposit", "keychain+deposit+-+" + qty + "+keychains") +
+        "&amount=" + deposit.toFixed(2);
     }
-    if (els.depositAmount) {
-      els.depositAmount.textContent = "$" + formatMoney(deposit);
-    }
+    if (els.depositAmount) els.depositAmount.textContent = money(deposit);
+    if (els.depositQty) els.depositQty.textContent = qty + " keychains";
+    document.dispatchEvent(new CustomEvent("llc:orderchange", { detail: { pfx: "kc" } }));
   }
 
   function syncQtyUI() {
@@ -910,7 +943,6 @@
 
   function buildQtyRow() {
     const row = els.qtyRow;
-    if (!row) return;
     row.innerHTML = "";
     [25, 50, 100].forEach(function (qty) {
       const btn = document.createElement("button");
@@ -918,7 +950,6 @@
       btn.className = "qty-chip";
       btn.setAttribute("role", "radio");
       btn.setAttribute("data-qty", String(qty));
-      btn.setAttribute("aria-checked", qty === state.qty ? "true" : "false");
       btn.innerHTML = "<strong>" + qty + "</strong><em>$" + PRICES[qty] + "</em>";
       btn.addEventListener("click", function () {
         state.qty = qty;
@@ -928,67 +959,409 @@
     });
   }
 
-  function setDropzoneLabel(name) {
-    if (!els.dropTitle || !els.dropzone) return;
-    if (name) {
-      els.dropTitle.textContent = name;
-      els.dropzone.classList.add("has-file");
-    } else {
-      els.dropTitle.textContent = "Drop a PNG, JPG, or SVG, or click to upload";
-      els.dropzone.classList.remove("has-file");
-    }
+  function setDropzoneLabel(text, hasFile) {
+    els.dropTitle.textContent = text;
+    els.dropzone.classList.toggle("has-file", !!hasFile);
   }
 
-  function onLogoFile(file) {
+  async function render() {
+    const canvas = els.canvas;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    try {
+      if (svgText === null) {
+        svgText = await fetch("keychain.svg").then(function (r) {
+          if (!r.ok) throw new Error("Missing keychain.svg");
+          return r.text();
+        });
+      }
+      let text = svgText;
+      if (state.logo) {
+        /* Drop the "YOUR LOGO" placeholder when a real logo is shown. */
+        text = text.replace(/<g id="kc-placeholder"[\s\S]*?<\/g>/, "");
+      }
+      const url = URL.createObjectURL(new Blob([text], { type: "image/svg+xml" }));
+      const base = await new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = function () {
+          resolve(img);
+        };
+        img.onerror = reject;
+        img.src = url;
+      });
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(base, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+    if (!state.logo) {
+      window.__keychainReady = true;
+      return;
+    }
+    const src = L.processLogo(state.logo, 0.5, false);
+    if (!src) {
+      window.__keychainReady = true;
+      return;
+    }
+    const sw = src.maxX - src.minX + 1;
+    const sh = src.maxY - src.minY + 1;
+    const mask = document.createElement("canvas");
+    mask.width = sw;
+    mask.height = sh;
+    const mctx = mask.getContext("2d");
+    const md = mctx.createImageData(sw, sh);
+    const c = L.BURN;
+    for (let y = 0; y < sh; y++) {
+      for (let x = 0; x < sw; x++) {
+        const v = src.cov[(src.minY + y) * src.w + src.minX + x] || 0;
+        const o = (y * sw + x) * 4;
+        md.data[o] = c[0] * 255;
+        md.data[o + 1] = c[1] * 255;
+        md.data[o + 2] = c[2] * 255;
+        md.data[o + 3] = Math.min(255, v * 255 * 0.92);
+      }
+    }
+    mctx.putImageData(md, 0, 0);
+    const box = { x: AREA.x * SCALE, y: AREA.y * SCALE, w: AREA.w * SCALE, h: AREA.h * SCALE };
+    const k = Math.min(box.w / sw, box.h / sh);
+    const tw = sw * k;
+    const th = sh * k;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(mask, box.x + (box.w - tw) / 2, box.y + (box.h - th) / 2, tw, th);
+    window.__keychainReady = true;
+  }
+
+  async function onLogoFile(file) {
     if (!file) return;
-    state.logoName = file.name || "logo";
-    setDropzoneLabel(state.logoName);
-    updateOrder();
+    if (!L.isSupported(file)) {
+      setDropzoneLabel("That file type won’t work. Please use a PNG, JPG, or SVG.", false);
+      return;
+    }
+    try {
+      state.logo = await L.fileToImage(file);
+      state.logoName = file.name || "logo";
+      setDropzoneLabel(state.logoName, true);
+      updateOrder();
+      render();
+      document.dispatchEvent(new CustomEvent("llc:logo", { detail: { pfx: "kc", name: state.logoName } }));
+    } catch (err) {
+      console.warn(err);
+      setDropzoneLabel("We couldn’t read that file. Try a PNG, JPG, or SVG.", false);
+    }
   }
 
   function bind() {
     els.qtyRow = $("keychain-qty-row");
-    els.cta = $("keychain-mailto-cta");
-    els.paypal = $("keychain-paypal-cta");
-    els.depositAmount = $("keychain-deposit-amount");
+    els.summary = $("kc-summary");
+    els.paypal = $("kc-paypal");
+    els.depositAmount = $("kc-deposit-amount");
+    els.depositQty = $("kc-deposit-qty");
     els.dropzone = $("keychain-dropzone");
     els.dropTitle = $("keychain-dropzone-title");
     els.logoInput = $("keychain-logo-input");
+    els.canvas = $("keychain-canvas");
     if (!els.qtyRow) return;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("thanks") === "keychain" && PRICES[Number(params.get("qty"))]) {
+      state.qty = Number(params.get("qty"));
+    }
 
     buildQtyRow();
     syncQtyUI();
+    render();
 
-    if (els.logoInput) {
-      els.logoInput.addEventListener("change", function (e) {
-        const file = e.target.files && e.target.files[0];
-        onLogoFile(file);
+    els.logoInput.addEventListener("change", function (e) {
+      onLogoFile(e.target.files && e.target.files[0]);
+    });
+    ["dragenter", "dragover"].forEach(function (ev) {
+      els.dropzone.addEventListener(ev, function (e) {
+        e.preventDefault();
+        els.dropzone.classList.add("dragover");
       });
-    }
-
-    if (els.dropzone) {
-      ["dragenter", "dragover"].forEach(function (ev) {
-        els.dropzone.addEventListener(ev, function (e) {
-          e.preventDefault();
-          els.dropzone.classList.add("dragover");
-        });
+    });
+    ["dragleave", "drop"].forEach(function (ev) {
+      els.dropzone.addEventListener(ev, function (e) {
+        e.preventDefault();
+        els.dropzone.classList.remove("dragover");
       });
-      ["dragleave", "drop"].forEach(function (ev) {
-        els.dropzone.addEventListener(ev, function (e) {
-          e.preventDefault();
-          els.dropzone.classList.remove("dragover");
-        });
-      });
-      els.dropzone.addEventListener("drop", function (e) {
-        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        onLogoFile(file);
-      });
-    }
+    });
+    els.dropzone.addEventListener("drop", function (e) {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) L.putFileInInput(els.logoInput, file);
+      onLogoFile(file);
+    });
 
     document.querySelectorAll("#keychains .keychain-price-card").forEach(function (card) {
-      card.addEventListener("click", function () {
+      L.bindPriceCard(card, function () {
         state.qty = Number(card.getAttribute("data-qty"));
         syncQtyUI();
+      }, "keychain-order");
+    });
+  }
+
+  window.__keychain = {
+    get state() {
+      return state;
+    },
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+})();
+
+/* Order forms: validation, FormSubmit post, thank-you state, email fallback. */
+(function () {
+  "use strict";
+  const L = window.__laser;
+  const EMAIL = "livingstondigitalco@gmail.com";
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function setup(form) {
+    const pfx = form.getAttribute("data-pfx");
+    const product = form.getAttribute("data-product");
+    const f = function (name) {
+      return $(pfx + "-" + name);
+    };
+    const fileInput = form.querySelector('input[type="file"]');
+    const submit = f("submit");
+    const SUBMIT_LABEL = submit.textContent;
+
+    function showErr(name, msg) {
+      const p = f(name + "-err");
+      const input = f(name);
+      if (p) {
+        p.textContent = msg || "";
+        p.hidden = !msg;
+      }
+      if (input) {
+        if (msg) input.setAttribute("aria-invalid", "true");
+        else input.removeAttribute("aria-invalid");
+        if (p) input.setAttribute("aria-describedby", p.id);
+      }
+    }
+
+    function hasFile() {
+      return !!(fileInput && fileInput.files && fileInput.files.length);
+    }
+
+    function updateLogoStatus() {
+      const status = f("logo-status");
+      const later = f("logo-later");
+      const logoField = f("f-logo");
+      if (hasFile()) {
+        const file = fileInput.files[0];
+        const mb = file.size / (1024 * 1024);
+        status.textContent = "✓ " + file.name + " will be sent with your order.";
+        status.classList.add("ok");
+        if (logoField) logoField.value = file.name + " (attached, " + (mb < 1 ? Math.max(1, Math.round(file.size / 1024)) + " KB" : mb.toFixed(1) + " MB") + ")";
+        later.checked = false;
+        later.disabled = true;
+        later.closest(".check").classList.add("is-disabled");
+        showErr("logo", "");
+      } else {
+        status.textContent = "No logo added yet. Upload it in the box above.";
+        status.classList.remove("ok");
+        if (logoField) logoField.value = later.checked ? "Not attached. Customer will email it." : "";
+        later.disabled = false;
+        later.closest(".check").classList.remove("is-disabled");
+      }
+    }
+
+    function validate() {
+      const errs = [];
+      function need(name, msg) {
+        const el = f(name);
+        if (!el.value.trim()) {
+          showErr(name, msg);
+          errs.push(el);
+        } else showErr(name, "");
+      }
+      need("business", "Please add your business name.");
+      need("contact", "Please add your name so we know who to email.");
+      const email = f("email");
+      const ev = email.value.trim();
+      if (!ev) {
+        showErr("email", "Please add your email. That’s where we send your proof.");
+        errs.push(email);
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(ev)) {
+        showErr("email", "That email doesn’t look quite right. Please check it.");
+        errs.push(email);
+      } else showErr("email", "");
+      if (!f("pickup").checked && !f("ship").value.trim()) {
+        showErr("ship", "Please add a city and state, or check local pickup.");
+        errs.push(f("ship"));
+      } else showErr("ship", "");
+      if (hasFile()) {
+        const file = fileInput.files[0];
+        if (file.size > L.MAX_BYTES) {
+          showErr("logo", "That logo file is over 10 MB. Please use a smaller file, or check “I’ll email my logo later.”");
+          errs.push(f("logo-later"));
+        } else if (!L.isSupported(file)) {
+          showErr("logo", "Please upload a PNG, JPG, or SVG logo.");
+          errs.push(f("logo-later"));
+        } else showErr("logo", "");
+      } else if (!f("logo-later").checked) {
+        showErr("logo", "Please upload your logo above, or check “I’ll email my logo later.”");
+        errs.push(f("logo-later"));
+      } else showErr("logo", "");
+      const top = f("form-err");
+      if (errs.length) {
+        top.textContent = errs.length === 1 ? "Please fix the item marked below." : "Please fix the " + errs.length + " items marked below.";
+        top.hidden = false;
+      } else {
+        top.hidden = true;
+      }
+      return errs;
+    }
+
+    function orderText() {
+      const v = function (id) {
+        const el = f(id);
+        return el ? el.value.trim() : "";
+      };
+      const lines = ["Hi Livingston Laser Co,", "", "I'd like to order " + v("f-qty") + " (" + v("f-price") + ")."];
+      if (product === "ornament") {
+        const t = $("custom-text");
+        lines.push("Style: " + v("f-style"));
+        lines.push("Custom text: " + ((t && t.value.trim()) || "(none)"));
+      } else {
+        lines.push("Size: 2.5 x 1.25 in, split ring included.");
+      }
+      lines.push("I'll attach our logo to this email.");
+      lines.push("");
+      lines.push("Business name: " + v("business"));
+      lines.push("Contact name: " + v("contact"));
+      lines.push("Phone: " + v("phone"));
+      lines.push(f("pickup").checked ? "Local pickup in Howell, MI" : "Ship to: " + v("ship"));
+      if (v("notes")) lines.push("Notes: " + v("notes"));
+      lines.push("", "Thank you!");
+      return lines.join("\n");
+    }
+
+    function updateFallback() {
+      const g = f("gmail");
+      if (!g) return;
+      g.href =
+        "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(EMAIL) +
+        "&su=" + encodeURIComponent(f("f-subject").value) +
+        "&body=" + encodeURIComponent(orderText());
+      f("f-replyto").value = f("email").value.trim();
+    }
+
+    form.addEventListener("input", function (e) {
+      updateFallback();
+      const id = e.target.id || "";
+      if (id.indexOf(pfx + "-") === 0 && !f("form-err").hidden) validate();
+    });
+    form.addEventListener("change", function (e) {
+      if (e.target === f("pickup")) {
+        f("ship").disabled = f("pickup").checked;
+        if (f("pickup").checked) showErr("ship", "");
+      }
+      if (e.target === fileInput || e.target === f("logo-later")) updateLogoStatus();
+      if (!f("form-err").hidden) validate();
+      updateFallback();
+    });
+    document.addEventListener("llc:logo", function (e) {
+      if (e.detail.pfx === pfx) updateLogoStatus();
+    });
+    document.addEventListener("llc:orderchange", function (e) {
+      if (e.detail.pfx === pfx) updateFallback();
+    });
+
+    form.addEventListener("submit", function (e) {
+      const errs = validate();
+      if (errs.length) {
+        e.preventDefault();
+        errs[0].focus();
+        return;
+      }
+      updateFallback();
+      updateLogoStatus();
+      submit.disabled = true;
+      submit.textContent = hasFile() ? "Sending your order and logo…" : "Sending your order…";
+      form.setAttribute("aria-busy", "true");
+    });
+
+    /* If someone comes back with the Back button, make the form usable again. */
+    window.addEventListener("pageshow", function () {
+      submit.disabled = false;
+      submit.textContent = SUBMIT_LABEL;
+      form.removeAttribute("aria-busy");
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("thanks") === product) {
+      f("fields").hidden = true;
+      f("thanks").hidden = false;
+      setTimeout(function () {
+        const box = f("thanks").closest(".order-box");
+        box.scrollIntoView({ block: "start" });
+        f("thanks").focus({ preventScroll: true });
+      }, 60);
+    }
+
+    updateLogoStatus();
+    updateFallback();
+  }
+
+  function bind() {
+    document.querySelectorAll("form[data-pfx]").forEach(setup);
+
+    document.querySelectorAll(".thanks-again").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const pfx = btn.getAttribute("data-again");
+        $(pfx + "-thanks").hidden = true;
+        $(pfx + "-fields").hidden = false;
+        if (window.history && history.replaceState) {
+          history.replaceState(null, "", window.location.pathname + window.location.hash);
+        }
+        $(pfx + "-business").focus();
+      });
+    });
+
+    document.querySelectorAll(".copy-addr").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const text = btn.getAttribute("data-copy");
+        const label = btn.textContent;
+        function done(ok) {
+          btn.textContent = ok ? "Copied!" : "Press Ctrl+C to copy";
+          setTimeout(function () {
+            btn.textContent = label;
+          }, 2000);
+        }
+        function legacy() {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          let ok = false;
+          try {
+            ok = document.execCommand("copy");
+          } catch (err) {
+            ok = false;
+          }
+          document.body.removeChild(ta);
+          done(ok);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(function () {
+            done(true);
+          }, legacy);
+        } else legacy();
       });
     });
   }
