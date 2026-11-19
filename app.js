@@ -1177,6 +1177,40 @@ window.__laser = window.__laser || {};
       }
     }
 
+    const ADDR = ["street", "city", "state", "zip"];
+    const ADDR_INPUTS = ["street", "apt", "city", "state", "zip"];
+
+    function normZip(raw) {
+      const t = String(raw || "").trim();
+      let m = /^(\d{5})(?:[-\s]?(\d{4}))?$/.exec(t);
+      if (!m) return "";
+      return m[2] ? m[1] + "-" + m[2] : m[1];
+    }
+
+    function addressLine() {
+      if (f("pickup").checked) return "Local pickup in Howell, MI";
+      const v = function (n) {
+        return f(n).value.trim();
+      };
+      const street = [v("street"), v("apt")].filter(Boolean).join(", ");
+      const zip = normZip(v("zip")) || v("zip");
+      const cityState = [v("city"), v("state")].filter(Boolean).join(", ");
+      const last = [cityState, zip].filter(Boolean).join(" ");
+      return [street, last].filter(Boolean).join(", ");
+    }
+
+    function syncPickup() {
+      const on = f("pickup").checked;
+      ADDR_INPUTS.forEach(function (n) {
+        f(n).disabled = on;
+      });
+      f("addr").classList.toggle("is-off", on);
+      if (on)
+        ADDR.forEach(function (n) {
+          showErr(n, "");
+        });
+    }
+
     function validate() {
       const errs = [];
       function need(name, msg) {
@@ -1197,10 +1231,24 @@ window.__laser = window.__laser || {};
         showErr("email", "That email doesn’t look quite right. Please check it.");
         errs.push(email);
       } else showErr("email", "");
-      if (!f("pickup").checked && !f("ship").value.trim()) {
-        showErr("ship", "Please add a city and state, or check local pickup.");
-        errs.push(f("ship"));
-      } else showErr("ship", "");
+      if (f("pickup").checked) {
+        ADDR.forEach(function (n) {
+          showErr(n, "");
+        });
+      } else {
+        need("street", "Please add the street address we should ship to, or check local pickup.");
+        need("city", "Please add the city.");
+        need("state", "Please choose the state.");
+        const zip = f("zip");
+        const zv = normZip(zip.value);
+        if (!zip.value.trim()) {
+          showErr("zip", "Please add the ZIP code.");
+          errs.push(zip);
+        } else if (!zv) {
+          showErr("zip", "ZIP codes are 5 digits, like 48843 (or ZIP+4, like 48843-1234).");
+          errs.push(zip);
+        } else showErr("zip", "");
+      }
       if (hasFile()) {
         const file = fileInput.files[0];
         if (file.size > L.MAX_BYTES) {
@@ -1241,8 +1289,8 @@ window.__laser = window.__laser || {};
       lines.push("");
       lines.push("Business name: " + v("business"));
       lines.push("Contact name: " + v("contact"));
-      lines.push("Phone: " + v("phone"));
-      lines.push(f("pickup").checked ? "Local pickup in Howell, MI" : "Ship to: " + v("ship"));
+      if (v("phone")) lines.push("Phone: " + v("phone"));
+      lines.push(f("pickup").checked ? "Local pickup in Howell, MI" : "Ship to: " + addressLine());
       if (v("notes")) lines.push("Notes: " + v("notes"));
       lines.push("", "Thank you!");
       return lines.join("\n");
@@ -1256,6 +1304,7 @@ window.__laser = window.__laser || {};
         "&su=" + encodeURIComponent(f("f-subject").value) +
         "&body=" + encodeURIComponent(orderText());
       f("f-replyto").value = f("email").value.trim();
+      f("f-address").value = addressLine();
     }
 
     form.addEventListener("input", function (e) {
@@ -1264,9 +1313,10 @@ window.__laser = window.__laser || {};
       if (id.indexOf(pfx + "-") === 0 && !f("form-err").hidden) validate();
     });
     form.addEventListener("change", function (e) {
-      if (e.target === f("pickup")) {
-        f("ship").disabled = f("pickup").checked;
-        if (f("pickup").checked) showErr("ship", "");
+      if (e.target === f("pickup")) syncPickup();
+      if (e.target === f("zip")) {
+        const z = normZip(f("zip").value);
+        if (z) f("zip").value = z;
       }
       if (e.target === fileInput || e.target === f("logo-later")) updateLogoStatus();
       if (!f("form-err").hidden) validate();
@@ -1286,6 +1336,8 @@ window.__laser = window.__laser || {};
         errs[0].focus();
         return;
       }
+      const z = normZip(f("zip").value);
+      if (z) f("zip").value = z;
       updateFallback();
       updateLogoStatus();
       submit.disabled = true;
@@ -1298,6 +1350,7 @@ window.__laser = window.__laser || {};
       submit.disabled = false;
       submit.textContent = SUBMIT_LABEL;
       form.removeAttribute("aria-busy");
+      syncPickup();
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -1311,6 +1364,7 @@ window.__laser = window.__laser || {};
       }, 60);
     }
 
+    syncPickup();
     updateLogoStatus();
     updateFallback();
   }
