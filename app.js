@@ -567,7 +567,12 @@
       encodeURIComponent(subject) +
       "&body=" +
       encodeURIComponent(body);
-    if (els.paypal) els.paypal.href = PAYPAL_URL;
+    if (els.paypal) {
+      const dep = price / 2;
+      els.paypal.href =
+        PAYPAL_URL.replace("ornament+deposit", "ornament+deposit+-+" + qty + "+ornaments") +
+        "&amount=" + dep.toFixed(2);
+    }
     if (els.depositAmount) {
       const deposit = price / 2;
       els.depositAmount.textContent =
@@ -850,7 +855,7 @@
         encodeURIComponent(body);
     }
     if (els.paypal) {
-      els.paypal.href = PAYPAL_BASE + "&amount=" + formatMoney(deposit);
+      els.paypal.href = PAYPAL_BASE.replace("keychain+deposit", "keychain+deposit+-+" + qty + "+keychains") + "&amount=" + formatMoney(deposit);
     }
     if (els.depositAmount) {
       els.depositAmount.textContent = "$" + formatMoney(deposit);
