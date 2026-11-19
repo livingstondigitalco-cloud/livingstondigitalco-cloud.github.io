@@ -746,3 +746,19 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 
+
+.upload-tips {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.upload-tips summary {
+  cursor: pointer;
+  font-weight: 550;
+  color: inherit;
+}
+.upload-tips ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+.upload-tips li { margin: 0.2rem 0; }
