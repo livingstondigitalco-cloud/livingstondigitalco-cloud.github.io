@@ -1,4 +1,4 @@
-/* Livingston Laser Co — ornament + keychain previews and order forms (static site; orders post to FormSubmit). */
+/* Dart Wood Design — ornament + keychain previews and order forms (static site; orders post to FormSubmit). */
 window.__laser = window.__laser || {};
 (function (L) {
   "use strict";
@@ -32,12 +32,12 @@ window.__laser = window.__laser || {};
   };
 })(window.__laser);
 
-/* Livingston Laser Co — ornament preview (static, no backend). */
+/* Dart Wood Design — ornament preview (static, no backend). */
 (function () {
   "use strict";
 
   const EMAIL = "livingstondigitalco@gmail.com";
-  const PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Livingston+Laser+Co+ornament+deposit&currency_code=USD";
+  const PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+ornament+deposit&currency_code=USD";
   const DESIGN = 1000;
   const SHADOW_PAD = 80;
   const RIBBON_PAD = 152;
@@ -887,7 +887,7 @@ window.__laser = window.__laser || {};
   "use strict";
   const L = window.__laser;
   const PAYPAL_BASE =
-    "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Livingston+Laser+Co+keychain+deposit&currency_code=USD";
+    "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+keychain+deposit&currency_code=USD";
   const PRICES = { 25: 75, 50: 125, 100: 200 };
   /* Engrave area on keychain.svg (720 x 320 units): right of the ring hole. */
   const AREA = { x: 262, y: 92, w: 380, h: 136 };
@@ -1277,7 +1277,7 @@ window.__laser = window.__laser || {};
         const el = f(id);
         return el ? el.value.trim() : "";
       };
-      const lines = ["Hi Livingston Laser Co,", "", "I'd like to order " + v("f-qty") + " (" + v("f-price") + ")."];
+      const lines = ["Hi Dart Wood Design,", "", "I'd like to order " + v("f-qty") + " (" + v("f-price") + ")."];
       if (product === "ornament") {
         const t = $("custom-text");
         lines.push("Style: " + v("f-style"));
