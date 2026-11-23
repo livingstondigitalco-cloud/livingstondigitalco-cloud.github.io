@@ -37,7 +37,7 @@ window.__laser = window.__laser || {};
   "use strict";
 
   const EMAIL = "livingstondigitalco@gmail.com";
-  const PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+ornament+deposit&currency_code=USD";
+  const PAYPAL_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+ornament+order&currency_code=USD";
   const DESIGN = 1000;
   const SHADOW_PAD = 80;
   const RIBBON_PAD = 152;
@@ -610,8 +610,7 @@ window.__laser = window.__laser || {};
 
   function updateMailto() {
     const qty = state.qty;
-    const price = PRICES[qty];
-    const deposit = price / 2;
+    const price = PRICES[qty] || PRICES[50];
     const style = currentStyleName();
     const money = function (n) {
       return "$" + (Number.isInteger(n) ? String(n) : n.toFixed(2));
@@ -623,7 +622,7 @@ window.__laser = window.__laser || {};
     setVal("orn-f-subject", "New ornament order — " + qty + " ornaments");
     setVal("orn-f-qty", qty + " ornaments");
     setVal("orn-f-price", money(price) + " (" + money(price / qty) + " each)");
-    setVal("orn-f-deposit", money(deposit));
+    setVal("orn-f-total", money(price));
     setVal("orn-f-style", style);
     setVal("orn-f-next", "https://livingstondigitalco-cloud.github.io/?thanks=ornament&qty=" + qty + "#order");
     if (els.summary) {
@@ -632,11 +631,12 @@ window.__laser = window.__laser || {};
     }
     if (els.paypal) {
       els.paypal.href =
-        PAYPAL_URL.replace("ornament+deposit", "ornament+deposit+-+" + qty + "+ornaments") +
-        "&amount=" + deposit.toFixed(2);
+        PAYPAL_URL.replace("ornament+order", "ornament+order+-+" + qty + "+ornaments") +
+        "&amount=" + price.toFixed(2);
+      els.paypal.textContent = "Pay " + money(price) + " with PayPal";
     }
-    if (els.depositAmount) els.depositAmount.textContent = money(deposit);
-    if (els.depositQty) els.depositQty.textContent = qty + " ornaments";
+    if (els.payAmount) els.payAmount.textContent = money(price);
+    if (els.payQty) els.payQty.textContent = qty + " ornaments";
     document.dispatchEvent(new CustomEvent("llc:orderchange", { detail: { pfx: "orn" } }));
   }
 
@@ -780,8 +780,8 @@ window.__laser = window.__laser || {};
     els.qtyRow = $("qty-row");
     els.summary = $("orn-summary");
     els.paypal = $("orn-paypal");
-    els.depositAmount = $("orn-deposit-amount");
-    els.depositQty = $("orn-deposit-qty");
+    els.payAmount = $("orn-pay-amount");
+    els.payQty = $("orn-pay-qty");
     els.dropzone = $("dropzone");
     els.dropTitle = $("dropzone-title");
     els.logoInput = $("logo-input");
@@ -882,12 +882,12 @@ window.__laser = window.__laser || {};
 })();
 
 
-/* Logo keychains: live preview, quantity, deposit. */
+/* Logo keychains: live preview, quantity, payment. */
 (function () {
   "use strict";
   const L = window.__laser;
   const PAYPAL_BASE =
-    "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+keychain+deposit&currency_code=USD";
+    "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=tdart3%40gmail.com&item_name=Dart+Wood+Design+keychain+order&currency_code=USD";
   const PRICES = { 25: 75, 50: 125, 100: 200 };
   /* Engrave area on keychain.svg (720 x 320 units): right of the ring hole. */
   const AREA = { x: 262, y: 92, w: 380, h: 136 };
@@ -906,8 +906,7 @@ window.__laser = window.__laser || {};
 
   function updateOrder() {
     const qty = state.qty;
-    const price = PRICES[qty];
-    const deposit = price / 2;
+    const price = PRICES[qty] || PRICES[50];
     function setVal(id, v) {
       const el = $(id);
       if (el) el.value = v;
@@ -915,7 +914,7 @@ window.__laser = window.__laser || {};
     setVal("kc-f-subject", "New keychain order — " + qty + " keychains");
     setVal("kc-f-qty", qty + " keychains");
     setVal("kc-f-price", money(price) + " (" + money(price / qty) + " each)");
-    setVal("kc-f-deposit", money(deposit));
+    setVal("kc-f-total", money(price));
     setVal("kc-f-next", "https://livingstondigitalco-cloud.github.io/?thanks=keychain&qty=" + qty + "#keychain-order");
     if (els.summary) {
       els.summary.innerHTML =
@@ -923,11 +922,12 @@ window.__laser = window.__laser || {};
     }
     if (els.paypal) {
       els.paypal.href =
-        PAYPAL_BASE.replace("keychain+deposit", "keychain+deposit+-+" + qty + "+keychains") +
-        "&amount=" + deposit.toFixed(2);
+        PAYPAL_BASE.replace("keychain+order", "keychain+order+-+" + qty + "+keychains") +
+        "&amount=" + price.toFixed(2);
+      els.paypal.textContent = "Pay " + money(price) + " with PayPal";
     }
-    if (els.depositAmount) els.depositAmount.textContent = money(deposit);
-    if (els.depositQty) els.depositQty.textContent = qty + " keychains";
+    if (els.payAmount) els.payAmount.textContent = money(price);
+    if (els.payQty) els.payQty.textContent = qty + " keychains";
     document.dispatchEvent(new CustomEvent("llc:orderchange", { detail: { pfx: "kc" } }));
   }
 
@@ -1057,8 +1057,8 @@ window.__laser = window.__laser || {};
     els.qtyRow = $("keychain-qty-row");
     els.summary = $("kc-summary");
     els.paypal = $("kc-paypal");
-    els.depositAmount = $("kc-deposit-amount");
-    els.depositQty = $("kc-deposit-qty");
+    els.payAmount = $("kc-pay-amount");
+    els.payQty = $("kc-pay-qty");
     els.dropzone = $("keychain-dropzone");
     els.dropTitle = $("keychain-dropzone-title");
     els.logoInput = $("keychain-logo-input");
